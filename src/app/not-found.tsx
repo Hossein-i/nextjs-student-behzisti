@@ -5,6 +5,7 @@ import { Placeholder } from '@/shared/ui/placeholder';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@heroui/react';
 import Link from 'next/link';
+import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface NotFoundPageProps {}

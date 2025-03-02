@@ -3,6 +3,7 @@
 import { BlurredCard } from '@/shared/ui/blurred-card';
 import { Placeholder } from '@/shared/ui/placeholder';
 import { Spinner } from '@heroui/react';
+import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface LoadingPageProps {}

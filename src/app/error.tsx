@@ -4,6 +4,7 @@ import { BlurredCard } from '@/shared/ui/blurred-card';
 import { Placeholder } from '@/shared/ui/placeholder';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@heroui/react';
+import React from 'react';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
