@@ -815,6 +815,15 @@ export type LoginMutation = {
   };
 };
 
+export type ForgotPasswordMutationVariables = Exact<{
+  nid: Scalars['String']['input'];
+}>;
+
+export type ForgotPasswordMutation = {
+  __typename?: 'Mutation';
+  ForgotPassword: boolean;
+};
+
 export type GetDetailsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetDetailsQuery = {
