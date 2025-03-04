@@ -6,4 +6,5 @@ export const envSchema = z.object({
     .default('development'),
   PORT: z.coerce.number().default(3000),
   GQL_URL: z.string().url(),
+  SESSION_SECRET: z.string(),
 });
