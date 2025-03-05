@@ -1,14 +1,14 @@
 import { gql } from '@apollo/client';
 import { apolloClient } from '../../base';
 import {
-  ForgotPasswordMutation,
-  ForgotPasswordMutationVariables,
-  LoginMutation,
-  LoginMutationVariables,
+  AuthMutation,
+  AuthMutationVariables,
+  PasswordResetRequestMutation,
+  PasswordResetRequestMutationVariables,
 } from '../../generates';
 
 export const authDocument = gql`
-  mutation login($dto: LoginDto!) {
+  mutation auth($dto: LoginDto!) {
     Login(dto: $dto) {
       id
       firstName
@@ -18,12 +18,12 @@ export const authDocument = gql`
   }
 `;
 
-export const authMutation = async (dto: LoginMutationVariables['dto']) => {
+export const authMutation = async (dto: AuthMutationVariables['dto']) => {
   const { username, password } = dto;
 
   const { data } = await apolloClient.mutate<
-    LoginMutation,
-    LoginMutationVariables
+    AuthMutation,
+    AuthMutationVariables
   >({
     mutation: authDocument,
     variables: { dto: { username, password } },
@@ -36,20 +36,22 @@ export const authMutation = async (dto: LoginMutationVariables['dto']) => {
   return data.Login;
 };
 
+export type AuthMutationReturn = ReturnType<typeof authMutation>;
+
 export const passwordResetRequestDocument = gql`
-  mutation forgotPassword($nid: String!) {
+  mutation passwordResetRequest($nid: String!) {
     ForgotPassword(nid: $nid)
   }
 `;
 
 export const passwordResetRequestMutation = async (
-  dto: ForgotPasswordMutationVariables
+  dto: PasswordResetRequestMutationVariables
 ) => {
   const { nid } = dto;
 
   const { data } = await apolloClient.mutate<
-    ForgotPasswordMutation,
-    ForgotPasswordMutationVariables
+    PasswordResetRequestMutation,
+    PasswordResetRequestMutationVariables
   >({
     mutation: passwordResetRequestDocument,
     variables: { nid },
@@ -59,5 +61,9 @@ export const passwordResetRequestMutation = async (
     return null;
   }
 
-  return data.ForgotPassword;
+  return { success: data.ForgotPassword };
 };
+
+export type PasswordResetRequestMutationReturn = ReturnType<
+  typeof passwordResetRequestMutation
+>;

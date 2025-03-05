@@ -81,7 +81,7 @@ export const forgetPassword = async (
 
     const response = await requestPasswordReset(validatedFields.data);
 
-    if (!response || response.isSuccess === null || !response.isSuccess) {
+    if (!response || response.success === false) {
       return { message: 'نام کاربری اشتباه می باشد.' };
     }
   } catch (error) {
