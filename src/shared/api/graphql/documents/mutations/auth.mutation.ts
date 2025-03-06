@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import { apolloClient } from '../../base';
-import {
+import type {
   PasswordResetRequestMutation,
   PasswordResetRequestMutationVariables,
   SignInMutation,
