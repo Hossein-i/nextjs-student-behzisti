@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   FieldPolicy,
   FieldReadFunction,
@@ -849,7 +849,7 @@ export type GetEducationLevelsQuery = {
     department: {
       __typename?: 'UniversityDepartment';
       title: string;
-      type: { __typename?: 'UniversityType'; title: string; id: string };
+      type: { __typename?: 'UniversityType'; id: string; title: string };
     };
   }>;
 };
@@ -866,7 +866,31 @@ export type GetTermsByEducationLevelQuery = {
     semister: number;
     unit: number;
     MadadkarAcceptance?: boolean | null;
-    year: { __typename?: 'Year'; title: string; id: string };
+    detail: {
+      __typename?: 'EducationDetail';
+      id: string;
+      studentNumber: string;
+      UniversityAcceptanceDate: any;
+      student: {
+        __typename?: 'Student';
+        id: string;
+        firstName: string;
+        lastName: string;
+        nid: string;
+        birthDate: any;
+      };
+      major: {
+        __typename?: 'UniversityMajor';
+        title: string;
+        level: { __typename?: 'UniversityLevel'; title: string };
+      };
+      department: {
+        __typename?: 'UniversityDepartment';
+        title: string;
+        type: { __typename?: 'UniversityType'; id: string; title: string };
+      };
+    };
+    year: { __typename?: 'Year'; id: string; title: string };
     cost: {
       __typename?: 'Cost';
       fixed: number;
