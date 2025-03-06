@@ -7,6 +7,7 @@ import type {
   GetTermsByEducationLevelQueryVariables,
 } from '../../generates';
 
+// documents
 export const educationLevelsDocument = gql`
   query getEducationLevels {
     getDetails {
@@ -36,25 +37,6 @@ export const educationLevelsDocument = gql`
     }
   }
 `;
-
-export const educationLevelsQuery = async () => {
-  const data = await apolloClient.query<
-    GetEducationLevelsQuery,
-    GetEducationLevelsQueryVariables
-  >({
-    query: educationLevelsDocument,
-  });
-
-  if (!data) {
-    return null;
-  }
-
-  return data.data.getDetails;
-};
-
-export type EducationLevelsQueryReturn = ReturnType<
-  typeof educationLevelsQuery
->;
 
 export const termsByEducationLevelDocument = gql`
   query getTermsByEducationLevel($eid: Float!) {
@@ -106,12 +88,24 @@ export const termsByEducationLevelDocument = gql`
   }
 `;
 
+// queries
+export const educationLevelsQuery = async () => {
+  const { data } = await apolloClient.query<
+    GetEducationLevelsQuery,
+    GetEducationLevelsQueryVariables
+  >({
+    query: educationLevelsDocument,
+  });
+
+  return data.getDetails;
+};
+
 export const termsByEducationLevelQuery = async (
   dto: GetTermsByEducationLevelQueryVariables
 ) => {
   const { eid } = dto;
 
-  const data = await apolloClient.query<
+  const { data } = await apolloClient.query<
     GetTermsByEducationLevelQuery,
     GetTermsByEducationLevelQueryVariables
   >({
@@ -119,13 +113,13 @@ export const termsByEducationLevelQuery = async (
     variables: { eid },
   });
 
-  if (!data) {
-    return null;
-  }
-
-  return data.data.getTerms;
+  return data.getTerms;
 };
 
-export type TermsByEducationLevelQueryReturn = ReturnType<
-  typeof termsByEducationLevelQuery
+// types
+export type EducationLevelsQueryReturn = Awaited<
+  ReturnType<typeof educationLevelsQuery>
+>;
+export type TermsByEducationLevelQueryReturn = Awaited<
+  ReturnType<typeof termsByEducationLevelQuery>
 >;
