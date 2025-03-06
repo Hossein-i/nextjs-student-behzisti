@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
 import type {
   FieldPolicy,
   FieldReadFunction,
@@ -800,11 +800,11 @@ export type Year = {
   title: Scalars['String']['output'];
 };
 
-export type AuthMutationVariables = Exact<{
+export type SignInMutationVariables = Exact<{
   dto: LoginDto;
 }>;
 
-export type AuthMutation = {
+export type SignInMutation = {
   __typename?: 'Mutation';
   Login: {
     __typename?: 'Student';

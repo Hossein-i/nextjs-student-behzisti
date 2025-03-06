@@ -6,9 +6,10 @@ import { defaultAuthRedirect, defaultLoginRedirect } from '../constants';
 import {
   Credentials,
   credentialsSchema,
+  PasswordResetRequest,
   passwordResetRequestSchema,
 } from '../lib';
-import { authenticate, requestPasswordReset } from '../model';
+import { authenticate, passwordResetRequest } from '../model';
 import { ForgetPasswordState, SignInFormState, UserSession } from '../types';
 
 export const signIn = async (
@@ -66,7 +67,7 @@ export const forgetPassword = async (
   formData: FormData
 ) => {
   try {
-    const variables: Partial<Credentials> = {
+    const variables: Partial<PasswordResetRequest> = {
       username: formData.get('username') as string,
     };
 
@@ -79,7 +80,7 @@ export const forgetPassword = async (
       };
     }
 
-    const response = await requestPasswordReset(validatedFields.data);
+    const response = await passwordResetRequest(validatedFields.data);
 
     if (!response || response.success === false) {
       return { message: 'نام کاربری اشتباه می باشد.' };

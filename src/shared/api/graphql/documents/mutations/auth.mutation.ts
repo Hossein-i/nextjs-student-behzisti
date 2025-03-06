@@ -1,14 +1,14 @@
 import { gql } from '@apollo/client';
 import { apolloClient } from '../../base';
 import {
-  AuthMutation,
-  AuthMutationVariables,
   PasswordResetRequestMutation,
   PasswordResetRequestMutationVariables,
+  SignInMutation,
+  SignInMutationVariables,
 } from '../../generates';
 
-export const authDocument = gql`
-  mutation auth($dto: LoginDto!) {
+export const signInDocument = gql`
+  mutation signIn($dto: LoginDto!) {
     Login(dto: $dto) {
       id
       firstName
@@ -18,14 +18,14 @@ export const authDocument = gql`
   }
 `;
 
-export const authMutation = async (dto: AuthMutationVariables['dto']) => {
+export const signInMutation = async (dto: SignInMutationVariables['dto']) => {
   const { username, password } = dto;
 
   const { data } = await apolloClient.mutate<
-    AuthMutation,
-    AuthMutationVariables
+    SignInMutation,
+    SignInMutationVariables
   >({
-    mutation: authDocument,
+    mutation: signInDocument,
     variables: { dto: { username, password } },
   });
 
@@ -36,7 +36,7 @@ export const authMutation = async (dto: AuthMutationVariables['dto']) => {
   return data.Login;
 };
 
-export type AuthMutationReturn = ReturnType<typeof authMutation>;
+export type SignInMutationReturn = ReturnType<typeof signInMutation>;
 
 export const passwordResetRequestDocument = gql`
   mutation passwordResetRequest($nid: String!) {

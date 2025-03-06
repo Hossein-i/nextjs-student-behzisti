@@ -28,11 +28,7 @@ export const withSession = (handler: AuthHandler) => {
     request: NextRequestWithSession,
     context?: unknown
   ) => {
-    const cookieStore = await cookies();
-    const session = await getIronSession<UserSession>(
-      cookieStore,
-      sessionOptions
-    );
+    const session = await getSession();
     request.session = session;
     return handler(request, context);
   };

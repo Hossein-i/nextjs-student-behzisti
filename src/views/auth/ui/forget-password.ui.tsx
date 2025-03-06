@@ -1,6 +1,6 @@
 'use client';
 
-import { ForgetPasswordForm } from '@/features/auth/ui/forget-password.ui';
+import { ForgetPasswordForm } from '@/features/auth/ui';
 import { BlurredCard } from '@/shared/ui/blurred-card';
 import { Logo } from '@/shared/ui/logo';
 import { Placeholder } from '@/shared/ui/placeholder';

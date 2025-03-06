@@ -1,6 +1,6 @@
 import {
-  authMutation,
   passwordResetRequestMutation,
+  signInMutation,
 } from '@/shared/api/graphql';
 import 'server-only';
 
@@ -13,7 +13,7 @@ export const authenticate = async (props: AuthenticateProps) => {
   try {
     const { username, password } = props;
 
-    const user = await authMutation({ username, password });
+    const user = await signInMutation({ username, password });
 
     return user;
   } catch (error) {
@@ -23,14 +23,12 @@ export const authenticate = async (props: AuthenticateProps) => {
   }
 };
 
-export type AuthenticateReturn = ReturnType<typeof authenticate>;
-
-export type RequestPasswordResetProps = {
+export type PasswordResetRequestProps = {
   username: string;
 };
 
 export const passwordResetRequest = async (
-  props: RequestPasswordResetProps
+  props: PasswordResetRequestProps
 ) => {
   try {
     const { username } = props;
@@ -48,7 +46,3 @@ export const passwordResetRequest = async (
     return null;
   }
 };
-
-export type RequestPasswordResetReturn = ReturnType<
-  typeof passwordResetRequest
->;
