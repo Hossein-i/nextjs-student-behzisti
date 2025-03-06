@@ -1,13 +1,20 @@
-// types
-export type {
-  PasswordResetRequestMutationReturn,
-  SignInMutationReturn,
+// documents
+export {
+  passwordResetRequestDocument,
+  signInDocument,
+  signUpDocument,
 } from './auth.mutation';
 
 // mutations
 export {
-  passwordResetRequestDocument,
   passwordResetRequestMutation,
-  signInDocument,
   signInMutation,
+  signUpMutation,
+} from './auth.mutation';
+
+// types
+export type {
+  PasswordResetRequestMutationReturn,
+  SignInMutationReturn,
+  SignUpMutationReturn,
 } from './auth.mutation';

@@ -800,6 +800,15 @@ export type Year = {
   title: Scalars['String']['output'];
 };
 
+export type SignUpMutationVariables = Exact<{
+  dto: RegisterStudentDto;
+}>;
+
+export type SignUpMutation = {
+  __typename?: 'Mutation';
+  registerStudent: { __typename?: 'Student'; id: string };
+};
+
 export type SignInMutationVariables = Exact<{
   dto: LoginDto;
 }>;
@@ -822,6 +831,76 @@ export type PasswordResetRequestMutationVariables = Exact<{
 export type PasswordResetRequestMutation = {
   __typename?: 'Mutation';
   ForgotPassword: boolean;
+};
+
+export type ProvincesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ProvincesQuery = {
+  __typename?: 'Query';
+  getProvinces: Array<{ __typename?: 'Province'; id: string; title: string }>;
+};
+
+export type CountiesByProvinceQueryVariables = Exact<{
+  dto: GetCountiesDto;
+}>;
+
+export type CountiesByProvinceQuery = {
+  __typename?: 'Query';
+  getCounties: Array<{ __typename?: 'County'; id: string; title: string }>;
+};
+
+export type DistrictsByCountyQueryVariables = Exact<{
+  dto: GetDeviationDto;
+}>;
+
+export type DistrictsByCountyQuery = {
+  __typename?: 'Query';
+  getDeviatins: Array<{ __typename?: 'Deviation'; id: string; title: string }>;
+};
+
+export type SubDistrictsByDistrictQueryVariables = Exact<{
+  dto: GetSubDeviationDto;
+}>;
+
+export type SubDistrictsByDistrictQuery = {
+  __typename?: 'Query';
+  getSubDeviations: Array<{
+    __typename?: 'SubDeviation';
+    id: string;
+    title: string;
+    type: SubDeviationType;
+  }>;
+};
+
+export type InquiryQueryVariables = Exact<{
+  dto: GetEstelamDto;
+  nid: Scalars['String']['input'];
+}>;
+
+export type InquiryQuery = {
+  __typename?: 'Query';
+  getEstelam: {
+    __typename?: 'EstelamResult';
+    name: string;
+    family: string;
+    fatherName: string;
+  };
+  getFolder: Array<{
+    __typename?: 'FoldersResult';
+    Rehab: number;
+    Commision: number;
+    Farzan: number;
+    Emdad: number;
+    CP: number;
+    Zanan: number;
+    ZananChild: number;
+    RehabChild: number;
+    ZananPoshtChild: number;
+    ZananPosht: number;
+    ZananTarkhis: number;
+    ZananTarkhisChild: number;
+    EmdadTakhis: number;
+  }>;
 };
 
 export type GetEducationLevelsQueryVariables = Exact<{ [key: string]: never }>;
@@ -903,6 +982,82 @@ export type GetTermsByEducationLevelQuery = {
       CARD: string;
       number: string;
     } | null;
+  }>;
+};
+
+export type UniveristyLevelGroupsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type UniveristyLevelGroupsQuery = {
+  __typename?: 'Query';
+  getUniveristyLevelGroups: Array<{
+    __typename?: 'UniversityLevelGroup';
+    id: string;
+    title: string;
+  }>;
+};
+
+export type UniveristyLevelSubGroupsQueryVariables = Exact<{
+  dto: GetUniversitySubGroupDto;
+}>;
+
+export type UniveristyLevelSubGroupsQuery = {
+  __typename?: 'Query';
+  getUniveristyLevelSubGroups: Array<{
+    __typename?: 'UniversityLevelSubGroup';
+    id: string;
+    title: string;
+  }>;
+};
+
+export type UniversityLevelsQueryVariables = Exact<{
+  dto: GetUniversityLevelDto;
+}>;
+
+export type UniversityLevelsQuery = {
+  __typename?: 'Query';
+  getUniversityLevels: Array<{
+    __typename?: 'UniversityLevel';
+    id: string;
+    title: string;
+  }>;
+};
+
+export type UniversityMajorsQueryVariables = Exact<{
+  dto: GetUniversityMajorsDto;
+}>;
+
+export type UniversityMajorsQuery = {
+  __typename?: 'Query';
+  getUniversityMajors: Array<{
+    __typename?: 'UniversityMajor';
+    id: string;
+    title: string;
+  }>;
+};
+
+export type UniveristyTypesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UniveristyTypesQuery = {
+  __typename?: 'Query';
+  getUniversityTypes: Array<{
+    __typename?: 'UniversityType';
+    id: string;
+    title: string;
+  }>;
+};
+
+export type UniversityDepartmentsQueryVariables = Exact<{
+  dto: GetUniversityDepartmentDto;
+}>;
+
+export type UniversityDepartmentsQuery = {
+  __typename?: 'Query';
+  getUniversityDepartments: Array<{
+    __typename?: 'UniversityDepartment';
+    id: string;
+    title: string;
   }>;
 };
 

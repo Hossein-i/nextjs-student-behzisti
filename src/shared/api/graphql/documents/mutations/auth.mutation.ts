@@ -5,7 +5,18 @@ import type {
   PasswordResetRequestMutationVariables,
   SignInMutation,
   SignInMutationVariables,
+  SignUpMutation,
+  SignUpMutationVariables,
 } from '../../generates';
+
+// documents
+export const signUpDocument = gql`
+  mutation signUp($dto: RegisterStudentDto!) {
+    registerStudent(dto: $dto) {
+      id
+    }
+  }
+`;
 
 export const signInDocument = gql`
   mutation signIn($dto: LoginDto!) {
@@ -17,6 +28,31 @@ export const signInDocument = gql`
     }
   }
 `;
+
+export const passwordResetRequestDocument = gql`
+  mutation passwordResetRequest($nid: String!) {
+    ForgotPassword(nid: $nid)
+  }
+`;
+
+// mutations
+export const signUpMutation = async (dto: SignUpMutationVariables['dto']) => {
+  const { person, address, university } = dto;
+
+  const { data } = await apolloClient.mutate<
+    SignUpMutation,
+    SignUpMutationVariables
+  >({
+    mutation: signUpDocument,
+    variables: { dto: { person, address, university } },
+  });
+
+  if (!data) {
+    return null;
+  }
+
+  return data.registerStudent;
+};
 
 export const signInMutation = async (dto: SignInMutationVariables['dto']) => {
   const { username, password } = dto;
@@ -35,14 +71,6 @@ export const signInMutation = async (dto: SignInMutationVariables['dto']) => {
 
   return data.Login;
 };
-
-export type SignInMutationReturn = ReturnType<typeof signInMutation>;
-
-export const passwordResetRequestDocument = gql`
-  mutation passwordResetRequest($nid: String!) {
-    ForgotPassword(nid: $nid)
-  }
-`;
 
 export const passwordResetRequestMutation = async (
   dto: PasswordResetRequestMutationVariables
@@ -64,6 +92,9 @@ export const passwordResetRequestMutation = async (
   return { success: data.ForgotPassword };
 };
 
-export type PasswordResetRequestMutationReturn = ReturnType<
-  typeof passwordResetRequestMutation
+// types
+export type SignUpMutationReturn = Awaited<ReturnType<typeof signUpMutation>>;
+export type SignInMutationReturn = Awaited<ReturnType<typeof signInMutation>>;
+export type PasswordResetRequestMutationReturn = Awaited<
+  ReturnType<typeof passwordResetRequestMutation>
 >;
