@@ -2,7 +2,7 @@
 export type {
   EducationLevelsQueryReturn,
   TermsByEducationLevelQueryReturn,
-} from './educations.query';
+} from './education.query';
 
 // queries
 export {
@@ -10,4 +10,4 @@ export {
   educationLevelsQuery,
   termsByEducationLevelDocument,
   termsByEducationLevelQuery,
-} from './educations.query';
+} from './education.query';
