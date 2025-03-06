@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   FieldPolicy,
   FieldReadFunction,
@@ -800,11 +800,11 @@ export type Year = {
   title: Scalars['String']['output'];
 };
 
-export type LoginMutationVariables = Exact<{
+export type AuthMutationVariables = Exact<{
   dto: LoginDto;
 }>;
 
-export type LoginMutation = {
+export type AuthMutation = {
   __typename?: 'Mutation';
   Login: {
     __typename?: 'Student';
@@ -815,24 +815,32 @@ export type LoginMutation = {
   };
 };
 
-export type ForgotPasswordMutationVariables = Exact<{
+export type PasswordResetRequestMutationVariables = Exact<{
   nid: Scalars['String']['input'];
 }>;
 
-export type ForgotPasswordMutation = {
+export type PasswordResetRequestMutation = {
   __typename?: 'Mutation';
   ForgotPassword: boolean;
 };
 
-export type GetDetailsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetEducationLevelsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetDetailsQuery = {
+export type GetEducationLevelsQuery = {
   __typename?: 'Query';
   getDetails: Array<{
     __typename?: 'EducationDetail';
     id: string;
     studentNumber: string;
     UniversityAcceptanceDate: any;
+    student: {
+      __typename?: 'Student';
+      id: string;
+      firstName: string;
+      lastName: string;
+      nid: string;
+      birthDate: any;
+    };
     major: {
       __typename?: 'UniversityMajor';
       title: string;
@@ -841,8 +849,60 @@ export type GetDetailsQuery = {
     department: {
       __typename?: 'UniversityDepartment';
       title: string;
-      type: { __typename?: 'UniversityType'; title: string };
+      type: { __typename?: 'UniversityType'; id: string; title: string };
     };
+  }>;
+};
+
+export type GetTermsByEducationLevelQueryVariables = Exact<{
+  eid: Scalars['Float']['input'];
+}>;
+
+export type GetTermsByEducationLevelQuery = {
+  __typename?: 'Query';
+  getTerms: Array<{
+    __typename?: 'Term';
+    id: string;
+    semister: number;
+    unit: number;
+    MadadkarAcceptance?: boolean | null;
+    detail: {
+      __typename?: 'EducationDetail';
+      id: string;
+      studentNumber: string;
+      UniversityAcceptanceDate: any;
+      student: {
+        __typename?: 'Student';
+        id: string;
+        firstName: string;
+        lastName: string;
+        nid: string;
+        birthDate: any;
+      };
+      major: {
+        __typename?: 'UniversityMajor';
+        title: string;
+        level: { __typename?: 'UniversityLevel'; title: string };
+      };
+      department: {
+        __typename?: 'UniversityDepartment';
+        title: string;
+        type: { __typename?: 'UniversityType'; id: string; title: string };
+      };
+    };
+    year: { __typename?: 'Year'; id: string; title: string };
+    cost: {
+      __typename?: 'Cost';
+      fixed: number;
+      variable: number;
+      total: number;
+    };
+    account?: {
+      __typename?: 'AccountDetail';
+      IBN: string;
+      CARD: string;
+      number: string;
+    } | null;
   }>;
 };
 

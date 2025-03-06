@@ -1,3 +1,9 @@
+// types
+export type {
+  AuthMutationReturn,
+  PasswordResetRequestMutationReturn,
+} from './auth.mutation';
+
 // mutations
 export {
   authDocument,

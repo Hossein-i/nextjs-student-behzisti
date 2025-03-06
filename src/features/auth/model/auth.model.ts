@@ -35,9 +35,13 @@ export const passwordResetRequest = async (
   try {
     const { username } = props;
 
-    const isSuccess = await passwordResetRequestMutation({ nid: username });
+    const response = await passwordResetRequestMutation({ nid: username });
 
-    return { isSuccess };
+    if (!response) {
+      throw new Error('Failed to reset password');
+    }
+
+    return response;
   } catch (error) {
     console.log('[passwordResetRequest]: ', error);
 

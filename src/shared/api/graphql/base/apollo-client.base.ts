@@ -1,3 +1,4 @@
+import { getSession } from '@/features/auth/api';
 import { config } from '@/shared/config';
 import {
   ApolloClient,
@@ -62,10 +63,14 @@ const retryLink = new RetryLink({
 });
 
 const authLink = setContext(async (_, { headers }) => {
+  const session = await getSession();
+  const token = session.user?.token;
+
   return {
     headers: {
       ...headers,
       // Authorization: token ? `Bearer ${token}` : undefined,
+      token: token ? token : undefined,
     },
   };
 });
