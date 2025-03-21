@@ -11,13 +11,13 @@ export {
   termsByEducationLevelDocument,
 } from './education.query';
 export {
-  univeristyLevelGroupsDocument,
-  univeristyLevelSubGroupsDocument,
-  univeristyTypesDocument,
   universityDepartmentsDocument,
+  universityLevelGroupsDocument,
+  universityLevelSubGroupsDocument,
   universityLevelsDocument,
   universityMajorsDocument,
-} from './univeristy.query';
+  universityTypesDocument,
+} from './university.query';
 
 // queries
 export {
@@ -32,13 +32,13 @@ export {
   termsByEducationLevelQuery,
 } from './education.query';
 export {
-  univeristyLevelGroupsQuery,
-  univeristyLevelSubGroupsQuery,
-  univeristyTypesQuery,
   universityDepartmentsQuery,
+  universityLevelGroupsQuery,
+  universityLevelSubGroupsQuery,
   universityLevelsQuery,
   universityMajorsQuery,
-} from './univeristy.query';
+  universityTypesQuery,
+} from './university.query';
 
 // types
 export type {
@@ -53,10 +53,10 @@ export type {
   TermsByEducationLevelQueryReturn,
 } from './education.query';
 export type {
-  UniveristyLevelGroupsQueryReturn,
-  UniveristyLevelSubGroupsQueryReturn,
-  UniveristyTypesQueryReturn,
   UniversityDepartmentsQueryReturn,
+  UniversityLevelGroupsQueryReturn,
+  UniversityLevelSubGroupsQueryReturn,
   UniversityLevelsQueryReturn,
   UniversityMajorsQueryReturn,
-} from './univeristy.query';
+  UniversityTypesQueryReturn,
+} from './university.query';

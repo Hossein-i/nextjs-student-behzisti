@@ -1,23 +1,23 @@
 import { gql } from '@apollo/client';
 import { apolloClient } from '../../base';
 import type {
-  UniveristyLevelGroupsQuery,
-  UniveristyLevelGroupsQueryVariables,
-  UniveristyLevelSubGroupsQuery,
-  UniveristyLevelSubGroupsQueryVariables,
-  UniveristyTypesQuery,
-  UniveristyTypesQueryVariables,
   UniversityDepartmentsQuery,
   UniversityDepartmentsQueryVariables,
+  UniversityLevelGroupsQuery,
+  UniversityLevelGroupsQueryVariables,
   UniversityLevelsQuery,
   UniversityLevelsQueryVariables,
+  UniversityLevelSubGroupsQuery,
+  UniversityLevelSubGroupsQueryVariables,
   UniversityMajorsQuery,
   UniversityMajorsQueryVariables,
+  UniversityTypesQuery,
+  UniversityTypesQueryVariables,
 } from '../../generates';
 
 // documents
-export const univeristyLevelGroupsDocument = gql`
-  query univeristyLevelGroups {
+export const universityLevelGroupsDocument = gql`
+  query universityLevelGroups {
     getUniveristyLevelGroups {
       id
       title
@@ -25,8 +25,8 @@ export const univeristyLevelGroupsDocument = gql`
   }
 `;
 
-export const univeristyLevelSubGroupsDocument = gql`
-  query univeristyLevelSubGroups($dto: GetUniversitySubGroupDto!) {
+export const universityLevelSubGroupsDocument = gql`
+  query universityLevelSubGroups($dto: GetUniversitySubGroupDto!) {
     getUniveristyLevelSubGroups(dto: $dto) {
       id
       title
@@ -52,8 +52,8 @@ export const universityMajorsDocument = gql`
   }
 `;
 
-export const univeristyTypesDocument = gql`
-  query univeristyTypes {
+export const universityTypesDocument = gql`
+  query universityTypes {
     getUniversityTypes {
       id
       title
@@ -71,27 +71,27 @@ export const universityDepartmentsDocument = gql`
 `;
 
 // queries
-export const univeristyLevelGroupsQuery = async () => {
+export const universityLevelGroupsQuery = async () => {
   const { data } = await apolloClient.query<
-    UniveristyLevelGroupsQuery,
-    UniveristyLevelGroupsQueryVariables
+    UniversityLevelGroupsQuery,
+    UniversityLevelGroupsQueryVariables
   >({
-    query: univeristyLevelGroupsDocument,
+    query: universityLevelGroupsDocument,
   });
 
   return data.getUniveristyLevelGroups;
 };
 
-export const univeristyLevelSubGroupsQuery = async (
-  dto: UniveristyLevelSubGroupsQueryVariables['dto']
+export const universityLevelSubGroupsQuery = async (
+  dto: UniversityLevelSubGroupsQueryVariables['dto']
 ) => {
   const { groupId } = dto;
 
   const { data } = await apolloClient.query<
-    UniveristyLevelSubGroupsQuery,
-    UniveristyLevelSubGroupsQueryVariables
+    UniversityLevelSubGroupsQuery,
+    UniversityLevelSubGroupsQueryVariables
   >({
-    query: univeristyLevelSubGroupsDocument,
+    query: universityLevelSubGroupsDocument,
     variables: { dto: { groupId } },
   });
 
@@ -130,12 +130,12 @@ export const universityMajorsQuery = async (
   return data.getUniversityMajors;
 };
 
-export const univeristyTypesQuery = async () => {
+export const universityTypesQuery = async () => {
   const { data } = await apolloClient.query<
-    UniveristyTypesQuery,
-    UniveristyTypesQueryVariables
+    UniversityTypesQuery,
+    UniversityTypesQueryVariables
   >({
-    query: univeristyTypesDocument,
+    query: universityTypesDocument,
   });
 
   return data.getUniversityTypes;
@@ -158,11 +158,11 @@ export const universityDepartmentsQuery = async (
 };
 
 // types
-export type UniveristyLevelGroupsQueryReturn = Awaited<
-  ReturnType<typeof univeristyLevelGroupsQuery>
+export type UniversityLevelGroupsQueryReturn = Awaited<
+  ReturnType<typeof universityLevelGroupsQuery>
 >;
-export type UniveristyLevelSubGroupsQueryReturn = Awaited<
-  ReturnType<typeof univeristyLevelSubGroupsQuery>
+export type UniversityLevelSubGroupsQueryReturn = Awaited<
+  ReturnType<typeof universityLevelSubGroupsQuery>
 >;
 export type UniversityLevelsQueryReturn = Awaited<
   ReturnType<typeof universityLevelsQuery>
@@ -170,8 +170,8 @@ export type UniversityLevelsQueryReturn = Awaited<
 export type UniversityMajorsQueryReturn = Awaited<
   ReturnType<typeof universityMajorsQuery>
 >;
-export type UniveristyTypesQueryReturn = Awaited<
-  ReturnType<typeof univeristyTypesQuery>
+export type UniversityTypesQueryReturn = Awaited<
+  ReturnType<typeof universityTypesQuery>
 >;
 export type UniversityDepartmentsQueryReturn = Awaited<
   ReturnType<typeof universityDepartmentsQuery>

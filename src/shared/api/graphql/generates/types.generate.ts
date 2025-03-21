@@ -985,11 +985,11 @@ export type GetTermsByEducationLevelQuery = {
   }>;
 };
 
-export type UniveristyLevelGroupsQueryVariables = Exact<{
+export type UniversityLevelGroupsQueryVariables = Exact<{
   [key: string]: never;
 }>;
 
-export type UniveristyLevelGroupsQuery = {
+export type UniversityLevelGroupsQuery = {
   __typename?: 'Query';
   getUniveristyLevelGroups: Array<{
     __typename?: 'UniversityLevelGroup';
@@ -998,11 +998,11 @@ export type UniveristyLevelGroupsQuery = {
   }>;
 };
 
-export type UniveristyLevelSubGroupsQueryVariables = Exact<{
+export type UniversityLevelSubGroupsQueryVariables = Exact<{
   dto: GetUniversitySubGroupDto;
 }>;
 
-export type UniveristyLevelSubGroupsQuery = {
+export type UniversityLevelSubGroupsQuery = {
   __typename?: 'Query';
   getUniveristyLevelSubGroups: Array<{
     __typename?: 'UniversityLevelSubGroup';
@@ -1037,9 +1037,9 @@ export type UniversityMajorsQuery = {
   }>;
 };
 
-export type UniveristyTypesQueryVariables = Exact<{ [key: string]: never }>;
+export type UniversityTypesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type UniveristyTypesQuery = {
+export type UniversityTypesQuery = {
   __typename?: 'Query';
   getUniversityTypes: Array<{
     __typename?: 'UniversityType';
