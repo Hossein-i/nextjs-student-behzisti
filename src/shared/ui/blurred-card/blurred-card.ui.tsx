@@ -12,7 +12,7 @@ export const BlurredCard: React.FC<BlurredCardProps> = (props) => {
   return (
     <Card
       className={cn(
-        'flex-row border border-background/50 bg-background/75',
+        'flex-row border border-background/50 dark:bg-background/80',
         className
       )}
       isBlurred={isBlurred}
