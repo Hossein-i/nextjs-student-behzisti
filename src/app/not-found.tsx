@@ -18,7 +18,14 @@ const NotFoundPage: React.FC<NotFoundPageProps> = () => {
           header="پیدا نشد!"
           description="صفحه مورد نظر شما وجود ندارد."
           action={
-            <Button as={Link} href="/" color="primary" fullWidth>
+            <Button
+              as={Link}
+              href="/"
+              color="primary"
+              variant="shadow"
+              radius="full"
+              fullWidth
+            >
               بازگشت به صفحه اصلی
             </Button>
           }
