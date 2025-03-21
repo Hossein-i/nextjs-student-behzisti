@@ -1,11 +1,10 @@
 'use client';
 
 import { SignOutForm } from '@/features/auth/ui';
+import { BackToHome } from '@/shared/ui/back-to-home';
 import { BlurredCard } from '@/shared/ui/blurred-card';
 import { Logo } from '@/shared/ui/logo';
 import { Placeholder } from '@/shared/ui/placeholder';
-import { Button } from '@heroui/react';
-import Link from 'next/link';
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -22,27 +21,25 @@ export const SignOut: React.FC<SignOutProps> = () => {
           <Placeholder
             header="سامانه دانشجویی سازمان بهزیستی کشور"
             description="آیا اطمینان دارید که از حساب کاربری خود خارج میشوید؟"
+            action={
+              <div className="w-full">
+                <section className="flex gap-2">
+                  <SignOutForm />
+                </section>
+
+                <section className="flex gap-2">
+                  <BackToHome
+                    color="primary"
+                    variant="light"
+                    radius="full"
+                    fullWidth
+                  />
+                </section>
+              </div>
+            }
           >
             <Logo />
           </Placeholder>
-
-          <section className="flex gap-2">
-            <SignOutForm />
-          </section>
-
-          <section className="flex gap-2">
-            <Button
-              as={Link}
-              href="/"
-              color="primary"
-              variant="light"
-              radius="full"
-              replace
-              fullWidth
-            >
-              بازگشت به صفحه اصلی
-            </Button>
-          </section>
         </section>
       </BlurredCard>
     </section>

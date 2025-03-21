@@ -22,36 +22,39 @@ export const SignIn: React.FC<SignInProps> = () => {
           <Placeholder
             header="سامانه دانشجویی سازمان بهزیستی کشور"
             description="با نام کاربری و کلمه عبور خود برای ورود به کارتابل خود اقدام نمایید."
+            action={
+              <div className="w-full">
+                <section className="flex gap-2">
+                  <SignInForm />
+                </section>
+
+                <section className="flex gap-2">
+                  <Button
+                    as={Link}
+                    href="/auth/sign-up"
+                    color="primary"
+                    variant="light"
+                    radius="full"
+                    fullWidth
+                  >
+                    ثبت نام
+                  </Button>
+                  <Button
+                    as={Link}
+                    href="/auth/forget-password"
+                    color="primary"
+                    variant="light"
+                    radius="full"
+                    fullWidth
+                  >
+                    فراموشی رمز عبور
+                  </Button>
+                </section>
+              </div>
+            }
           >
             <Logo />
           </Placeholder>
-
-          <section className="flex gap-2">
-            <SignInForm />
-          </section>
-
-          <section className="flex gap-2">
-            <Button
-              as={Link}
-              href="/auth/sign-up"
-              color="primary"
-              variant="light"
-              radius="full"
-              fullWidth
-            >
-              ثبت نام
-            </Button>
-            <Button
-              as={Link}
-              href="/auth/forget-password"
-              color="primary"
-              variant="light"
-              radius="full"
-              fullWidth
-            >
-              فراموشی رمز عبور
-            </Button>
-          </section>
         </section>
       </BlurredCard>
     </section>
