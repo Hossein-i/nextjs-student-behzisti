@@ -3,10 +3,7 @@ import type {
   TermsByEducationLevelQueryReturn,
 } from '@/shared/api/graphql';
 
-export type EducationLevel = NonNullable<
-  Awaited<EducationLevelsQueryReturn>
->[0];
+export type EducationLevel = NonNullable<EducationLevelsQueryReturn>[0];
 
-export type TermByEducationLevel = NonNullable<
-  Awaited<TermsByEducationLevelQueryReturn>
->[0];
+export type TermByEducationLevel =
+  NonNullable<TermsByEducationLevelQueryReturn>[0];

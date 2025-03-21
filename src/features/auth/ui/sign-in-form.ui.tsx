@@ -9,10 +9,8 @@ import { signIn } from '../actions';
 export interface SignInFormProps {}
 
 export const SignInForm: React.FC<SignInFormProps> = () => {
-  const [{ errors, message }, action, pending] = useActionState(signIn, {
-    errors: {},
-    message: undefined,
-  });
+  const [state, action, pending] = useActionState(signIn, undefined);
+  const { message, errors } = state || {};
 
   return (
     <Form action={action} validationErrors={errors} className="flex w-full">
@@ -23,6 +21,7 @@ export const SignInForm: React.FC<SignInFormProps> = () => {
         color="primary"
         variant="bordered"
         radius="full"
+        isDisabled={pending}
         autoFocus
       />
       <PasswordInput
@@ -31,8 +30,8 @@ export const SignInForm: React.FC<SignInFormProps> = () => {
         color="primary"
         variant="bordered"
         radius="full"
+        isDisabled={pending}
       />
-      {/* <Checkbox name="remember_me">من را به خاطر بسپار.</Checkbox> */}
       <Button
         type="submit"
         color="primary"

@@ -1,3 +1,4 @@
+import type { SignUpMutationVariables } from '@/shared/api/graphql';
 import type { IronSession } from 'iron-session';
 import type { NextRequest, NextResponse } from 'next/server';
 
@@ -29,21 +30,7 @@ export type AuthHandler = (
   context?: unknown
 ) => NextResponse | Promise<NextResponse>;
 
-export type SignInFormState =
-  | {
-      errors?: {
-        username?: string[];
-        password?: string[];
-      };
-      message?: string;
-    }
-  | undefined;
-
-export type ForgetPasswordState =
-  | {
-      errors?: {
-        username?: string[];
-      };
-      message?: string;
-    }
-  | undefined;
+export type SignUpVariables = Pick<
+  SignUpMutationVariables['dto'],
+  'person' | 'address' | 'university'
+>;

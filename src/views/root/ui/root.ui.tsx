@@ -17,48 +17,51 @@ export const Root: React.FC<RootProps> = () => {
         className="h-full max-w-screen-md"
         classNames={{ body: 'flex-col items-center justify-center' }}
       >
-        <section className="max-w-lg space-y-4">
+        <section className="max-w-lg">
           <Placeholder
             header="سامانه دانشجویی سازمان بهزیستی کشور"
             description="برای ثبت اطلاعات ترم خود چنانچه نام کاربری و کلمه عبور ندارید، از بخش زیر اقدام به دریافت نام کاربری و کلمه عبور نمایید و در غیر این صورت با نام کاربری و کلمه عبور خود برای ورود به کارتابل خود اقدام نمایید."
+            action={
+              <div className="w-full space-y-2">
+                <section className="flex gap-2">
+                  <Button
+                    as={Link}
+                    href="/auth/sign-up"
+                    color="primary"
+                    variant="shadow"
+                    radius="full"
+                    fullWidth
+                  >
+                    ثبت نام
+                  </Button>
+                  <Button
+                    as={Link}
+                    href="/auth"
+                    color="primary"
+                    variant="bordered"
+                    radius="full"
+                    fullWidth
+                  >
+                    ورود
+                  </Button>
+                </section>
+
+                <section className="text-center">
+                  <Button
+                    as={Link}
+                    href="/legals"
+                    color="primary"
+                    variant="light"
+                    radius="full"
+                  >
+                    شیوه نامه حمایت های دانشجویی
+                  </Button>
+                </section>
+              </div>
+            }
           >
             <Logo />
           </Placeholder>
-
-          <section className="flex gap-2">
-            <Button
-              as={Link}
-              href="/auth/sign-up"
-              color="primary"
-              variant="shadow"
-              radius="full"
-              fullWidth
-            >
-              ثبت نام
-            </Button>
-            <Button
-              as={Link}
-              href="/auth"
-              color="primary"
-              variant="bordered"
-              radius="full"
-              fullWidth
-            >
-              ورود
-            </Button>
-          </section>
-
-          <section className="text-center">
-            <Button
-              as={Link}
-              href="/legals"
-              color="primary"
-              variant="light"
-              radius="full"
-            >
-              شیوه نامه حمایت های دانشجویی
-            </Button>
-          </section>
         </section>
       </BlurredCard>
     </section>

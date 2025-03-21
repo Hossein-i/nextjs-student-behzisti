@@ -1,6 +1,6 @@
 'use client';
 
-import { ForgetPasswordForm } from '@/features/auth/ui/forget-password.ui';
+import { ForgetPasswordForm } from '@/features/auth/ui';
 import { BlurredCard } from '@/shared/ui/blurred-card';
 import { Logo } from '@/shared/ui/logo';
 import { Placeholder } from '@/shared/ui/placeholder';
@@ -22,36 +22,39 @@ export const ForgetPassword: React.FC<ForgetPasswordProps> = () => {
           <Placeholder
             header="سامانه دانشجویی سازمان بهزیستی کشور"
             description="با نام کاربری خود می‌توانید رمز عبور خود را بازیابی کنید."
+            action={
+              <div className="w-full">
+                <section className="flex gap-2">
+                  <ForgetPasswordForm />
+                </section>
+
+                <section className="flex gap-2">
+                  <Button
+                    as={Link}
+                    href="/auth/sign-up"
+                    color="primary"
+                    variant="light"
+                    radius="full"
+                    fullWidth
+                  >
+                    ثبت نام
+                  </Button>
+                  <Button
+                    as={Link}
+                    href="/auth"
+                    color="primary"
+                    variant="light"
+                    radius="full"
+                    fullWidth
+                  >
+                    ورود
+                  </Button>
+                </section>
+              </div>
+            }
           >
             <Logo />
           </Placeholder>
-
-          <section className="flex gap-2">
-            <ForgetPasswordForm />
-          </section>
-
-          <section className="flex gap-2">
-            <Button
-              as={Link}
-              href="/auth/sign-up"
-              color="primary"
-              variant="light"
-              radius="full"
-              fullWidth
-            >
-              ثبت نام
-            </Button>
-            <Button
-              as={Link}
-              href="/auth"
-              color="primary"
-              variant="light"
-              radius="full"
-              fullWidth
-            >
-              ورود
-            </Button>
-          </section>
         </section>
       </BlurredCard>
     </section>
