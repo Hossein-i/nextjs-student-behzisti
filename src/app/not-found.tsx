@@ -1,10 +1,9 @@
 'use client';
 
+import { BackToHome } from '@/shared/ui/back-to-home';
 import { BlurredCard } from '@/shared/ui/blurred-card';
 import { Placeholder } from '@/shared/ui/placeholder';
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
-import { Button } from '@heroui/react';
-import Link from 'next/link';
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -18,16 +17,12 @@ const NotFoundPage: React.FC<NotFoundPageProps> = () => {
           header="پیدا نشد!"
           description="صفحه مورد نظر شما وجود ندارد."
           action={
-            <Button
-              as={Link}
-              href="/"
+            <BackToHome
               color="primary"
               variant="shadow"
               radius="full"
               fullWidth
-            >
-              بازگشت به صفحه اصلی
-            </Button>
+            />
           }
         >
           <QuestionMarkCircleIcon className="h-32 w-32" />
