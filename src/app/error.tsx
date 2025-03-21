@@ -4,6 +4,7 @@ import { BlurredCard } from '@/shared/ui/blurred-card';
 import { Placeholder } from '@/shared/ui/placeholder';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@heroui/react';
+import Link from 'next/link';
 import React from 'react';
 
 interface ErrorPageProps {
@@ -26,8 +27,24 @@ const ErrorPage: React.FC<ErrorPageProps> = (props) => {
                 <summary>توضیحات بیشتر</summary>
                 {error.message}
               </details>
-              <Button color="primary" onPress={reset} fullWidth>
+              <Button
+                color="primary"
+                variant="shadow"
+                radius="full"
+                onPress={reset}
+                fullWidth
+              >
                 تلاش مجدد
+              </Button>
+              <Button
+                as={Link}
+                href="/"
+                color="primary"
+                variant="bordered"
+                radius="full"
+                fullWidth
+              >
+                بازگشت به صفحه اصلی
               </Button>
             </>
           }
