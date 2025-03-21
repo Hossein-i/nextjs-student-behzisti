@@ -2,19 +2,17 @@
 
 import { Button, Form, Input } from '@heroui/react';
 import React, { useActionState } from 'react';
-import { forgetPassword } from '../actions';
+import { passwordResetRequest } from '../actions';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ForgetPasswordFormProps {}
 
 export const ForgetPasswordForm: React.FC<ForgetPasswordFormProps> = () => {
-  const [{ errors, message }, action, pending] = useActionState(
-    forgetPassword,
-    {
-      errors: {},
-      message: undefined,
-    }
+  const [state, action, pending] = useActionState(
+    passwordResetRequest,
+    undefined
   );
+  const { message, errors } = state || {};
 
   return (
     <Form action={action} validationErrors={errors} className="flex w-full">
@@ -25,6 +23,7 @@ export const ForgetPasswordForm: React.FC<ForgetPasswordFormProps> = () => {
         color="primary"
         variant="bordered"
         radius="full"
+        isDisabled={pending}
         autoFocus
       />
       <Button

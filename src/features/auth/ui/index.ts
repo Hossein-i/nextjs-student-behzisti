@@ -1,3 +1,5 @@
+export * from './sign-up';
+
 // types
 export type { ForgetPasswordFormProps } from './forget-password-form.ui';
 export type { SignInFormProps } from './sign-in-form.ui';

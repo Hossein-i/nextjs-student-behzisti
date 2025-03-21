@@ -6,7 +6,7 @@ import {
   defaultLoginRedirect,
   defaultPrivateRoutes,
 } from '../constants';
-import { checkRoute } from '../lib';
+import { checkRoute } from '../lib/utils';
 import { AuthHandler, AuthMiddlewareConfig } from '../types';
 import { withSession } from './session.api';
 
