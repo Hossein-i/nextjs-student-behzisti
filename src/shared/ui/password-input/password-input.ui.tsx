@@ -1,3 +1,5 @@
+'use client';
+
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import {
   Button,
@@ -8,6 +10,7 @@ import {
 import React, { forwardRef } from 'react';
 
 export interface PasswordInputProps extends InputProps {
+  defaultShowPass?: boolean;
   showPass?: boolean;
   // eslint-disable-next-line no-unused-vars
   onShowPass?: (showPass?: boolean) => void;
@@ -15,7 +18,15 @@ export interface PasswordInputProps extends InputProps {
 
 export const PasswordInput: React.FC<PasswordInputProps> = forwardRef(
   (props, ref) => {
-    const { showPass, onShowPass, ...restProps } = props;
+    const { defaultShowPass, showPass, onShowPass, ...restProps } = props;
+
+    const { isOpen, onOpen, onClose } = useDisclosure({
+      defaultOpen: defaultShowPass,
+      isOpen: showPass,
+      onChange: onShowPass,
+    });
+    const onToggle = isOpen ? onClose : onOpen;
+    const Icon = isOpen ? EyeSlashIcon : EyeIcon;
 
     const {
       Component,
@@ -36,14 +47,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = forwardRef(
     } = useInput({
       ...restProps,
       ref,
+      type: isOpen ? 'text' : 'password',
     });
-    const { isOpen, onOpen, onClose } = useDisclosure({
-      defaultOpen: false,
-      isOpen: showPass,
-      onChange: onShowPass,
-    });
-    const onToggle = isOpen ? onClose : onOpen;
-    const Icon = isOpen ? EyeSlashIcon : EyeIcon;
 
     const labelContent = <label {...getLabelProps()}>{label}</label>;
 
@@ -65,14 +70,14 @@ export const PasswordInput: React.FC<PasswordInputProps> = forwardRef(
         return (
           <div {...getInnerWrapperProps()}>
             {startContent}
-            <input {...getInputProps()} type={isOpen ? 'text' : 'password'} />
+            <input {...getInputProps()} />
             {end}
           </div>
         );
       }
 
       return <input {...getInputProps()} />;
-    }, [startContent, end, getInputProps, getInnerWrapperProps, isOpen]);
+    }, [startContent, end, getInputProps, getInnerWrapperProps]);
 
     return (
       <Component {...getBaseProps()}>

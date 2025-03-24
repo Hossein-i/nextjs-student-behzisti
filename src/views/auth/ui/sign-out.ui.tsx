@@ -17,12 +17,12 @@ export const SignOut: React.FC<SignOutProps> = () => {
         className="h-full max-w-screen-md"
         classNames={{ body: 'flex-col items-center justify-center' }}
       >
-        <section className="max-w-lg space-y-4">
+        <section className="max-w-lg">
           <Placeholder
             header="سامانه دانشجویی سازمان بهزیستی کشور"
             description="آیا اطمینان دارید که از حساب کاربری خود خارج میشوید؟"
             action={
-              <div className="w-full">
+              <div className="w-full space-y-2">
                 <section className="flex gap-2">
                   <SignOutForm />
                 </section>

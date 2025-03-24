@@ -17,7 +17,7 @@ export const ForgetPasswordForm: React.FC<ForgetPasswordFormProps> = () => {
   return (
     <Form action={action} validationErrors={errors} className="flex w-full">
       <Input
-        type="text"
+        inputMode="decimal"
         name="username"
         label="نام کاربری"
         color="primary"
@@ -29,6 +29,7 @@ export const ForgetPasswordForm: React.FC<ForgetPasswordFormProps> = () => {
       <Button
         type="submit"
         color="primary"
+        variant="shadow"
         isLoading={pending}
         radius="full"
         fullWidth

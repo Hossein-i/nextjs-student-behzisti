@@ -15,6 +15,7 @@ export const SignOutForm: React.FC<SignOutFormProps> = () => {
       <Button
         type="submit"
         color="primary"
+        variant="shadow"
         radius="full"
         isLoading={pending}
         fullWidth
