@@ -15,7 +15,7 @@ export const SignInForm: React.FC<SignInFormProps> = () => {
   return (
     <Form action={action} validationErrors={errors} className="flex w-full">
       <Input
-        type="text"
+        inputMode="decimal"
         name="username"
         label="نام کاربری"
         color="primary"
