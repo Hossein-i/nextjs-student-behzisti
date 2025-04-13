@@ -2,7 +2,7 @@
 
 import type { CountiesByProvinceQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
-import { useCounties, type UseCountiesProps } from '../lib/hooks';
+import { useCounties, type UseCountiesProps } from './counties.hook';
 
 export interface CountiesAutocompleteProps
   extends UseCountiesProps,

@@ -2,7 +2,7 @@
 
 import type { ProvincesQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
-import { useProvinces, type UseProvincesProps } from '../lib/hooks';
+import { useProvinces, type UseProvincesProps } from './provinces.hook';
 
 export interface ProvincesAutocompleteProps
   extends UseProvincesProps,
