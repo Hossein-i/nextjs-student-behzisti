@@ -6,7 +6,7 @@ import React from 'react';
 import {
   useUniversityMajors,
   type UseUniversityMajorsProps,
-} from '../lib/hooks';
+} from './university-majors.hook';
 
 export interface UniversityMajorsAutocompleteProps
   extends UseUniversityMajorsProps,

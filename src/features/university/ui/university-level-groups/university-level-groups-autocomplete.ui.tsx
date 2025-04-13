@@ -6,7 +6,7 @@ import React from 'react';
 import {
   useUniversityLevelGroups,
   type UseUniversityLevelGroupsProps,
-} from '../lib/hooks';
+} from './university-level-groups.hook';
 
 export interface UniversityLevelGroupsAutocompleteProps
   extends UseUniversityLevelGroupsProps,

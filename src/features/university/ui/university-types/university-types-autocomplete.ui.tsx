@@ -3,7 +3,10 @@
 import type { UniversityTypesQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
 import React from 'react';
-import { useUniversityTypes, type UseUniversityTypesProps } from '../lib/hooks';
+import {
+  useUniversityTypes,
+  type UseUniversityTypesProps,
+} from './university-types.hook';
 
 export interface UniversityTypesAutocompleteProps
   extends UseUniversityTypesProps,

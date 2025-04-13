@@ -6,7 +6,7 @@ import React from 'react';
 import {
   useUniversityDepartments,
   type UseUniversityDepartmentsProps,
-} from '../lib/hooks/university-departments.hook';
+} from './university-departments.hook';
 
 export interface UniversityDepartmentsAutocompleteProps
   extends UseUniversityDepartmentsProps,
