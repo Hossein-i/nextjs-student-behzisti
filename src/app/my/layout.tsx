@@ -12,7 +12,7 @@ const MyLayout: React.FC<MyLayoutProps> = async (props) => {
     <>
       <Header />
       <NavigationBar />
-      {children}
+      <main className="pb-16">{children}</main>
     </>
   );
 };

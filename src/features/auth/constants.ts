@@ -26,7 +26,7 @@ export const defaultCookieName: string = 'callback-url';
  *
  * @type {string}
  */
-export const defaultLoginRedirect: string = '/my';
+export const defaultLoginRedirect: string = '/my/dashboard';
 
 /**
  * A set of routes that are available to the private These paths require

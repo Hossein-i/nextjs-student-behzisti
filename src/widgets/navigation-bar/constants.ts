@@ -24,7 +24,7 @@ export const navigationLinks: Array<{
     title: 'تحصیلات',
   },
   {
-    href: '/my',
+    href: '/my/dashboard',
     icon: {
       active: Squares2X2InactiveIcon,
       inactive: Squares2X2ActiveIcon,
