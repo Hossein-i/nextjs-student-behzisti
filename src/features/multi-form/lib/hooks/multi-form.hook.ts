@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import {
+  useForm,
   type DefaultValues,
   type FieldValues,
   type Mode,
   type Path,
-  useForm,
 } from 'react-hook-form';
-import { type ZodSchema } from 'zod';
+import type { ZodType } from 'zod';
 
 import { Step, type StepProps } from '../../ui';
 
@@ -16,7 +16,7 @@ export interface UseMultiFormProps<T extends FieldValues> {
   defaultStep?: number;
   defaultValues?: DefaultValues<T>;
   stepFields?: (Path<T> | Path<T>[] | readonly Path<T>[])[];
-  validationSchema?: ZodSchema<T>;
+  validationSchema?: ZodType<T, T>;
   mode?: Mode;
 }
 
@@ -34,7 +34,9 @@ export const useMultiForm = <T extends FieldValues>(
 
   const form = useForm<T>({
     defaultValues,
-    resolver: validationSchema ? zodResolver(validationSchema) : undefined,
+    resolver: validationSchema
+      ? zodResolver<T, unknown, T>(validationSchema)
+      : undefined,
     mode,
   });
 
