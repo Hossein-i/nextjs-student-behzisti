@@ -1,0 +1,12 @@
+schema:
+  - http://nodejs.behzisti.net:3500/graphql
+documents:
+  - ./src/shared/api/graphql/documents/**/*.ts
+generates:
+  ./src/shared/api/graphql/generates/types.generate.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-apollo-client-helpers
+    config:
+      withHooks: true

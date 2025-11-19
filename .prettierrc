@@ -1,5 +1,9 @@
 {
-  "plugins": ["prettier-plugin-jsdoc", "prettier-plugin-tailwindcss"],
+  "plugins": [
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-jsdoc",
+    "prettier-plugin-tailwindcss"
+  ],
   "semi": true,
   "singleQuote": true,
   "trailingComma": "es5",
