@@ -4,17 +4,4 @@ export {
   signInDocument,
   signUpDocument,
 } from './auth.mutation';
-
-// mutations
-export {
-  passwordResetRequestMutation,
-  signInMutation,
-  signUpMutation,
-} from './auth.mutation';
-
-// types
-export type {
-  PasswordResetRequestMutationReturn,
-  SignInMutationReturn,
-  SignUpMutationReturn,
-} from './auth.mutation';
+export { majorDocument, termDocument } from './education.mutation';

@@ -8,6 +8,7 @@ import {
   BanknotesIcon as BanknotesActiveIcon,
   Squares2X2Icon as Squares2X2ActiveIcon,
 } from '@heroicons/react/24/solid';
+
 import { IconType } from './types';
 
 export const navigationLinks: Array<{
@@ -16,12 +17,12 @@ export const navigationLinks: Array<{
   title: string;
 }> = [
   {
-    href: '/my/education',
+    href: '/my/transactions',
     icon: {
-      active: AcademicCapInactiveIcon,
-      inactive: AcademicCapActiveIcon,
+      active: BanknotesInactiveIcon,
+      inactive: BanknotesActiveIcon,
     },
-    title: 'تحصیلات',
+    title: 'تراکنش‌ها',
   },
   {
     href: '/my/dashboard',
@@ -32,11 +33,11 @@ export const navigationLinks: Array<{
     title: 'داشبورد',
   },
   {
-    href: '/my/transactions',
+    href: '/my/education',
     icon: {
-      active: BanknotesInactiveIcon,
-      inactive: BanknotesActiveIcon,
+      active: AcademicCapInactiveIcon,
+      inactive: AcademicCapActiveIcon,
     },
-    title: 'تراکنش‌ها',
+    title: 'تحصیلات',
   },
 ];

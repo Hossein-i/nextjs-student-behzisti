@@ -1,16 +1,20 @@
 'use client';
 
-import type { UniversityLevelSubGroupsQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
 import React from 'react';
+
 import {
   useUniversityLevelSubGroups,
   type UseUniversityLevelSubGroupsProps,
 } from './university-level-sub-groups.hook';
 
+import type { UniversityLevelSubGroupsQuery } from '@/shared/api/graphql';
+
 export interface UniversityLevelSubGroupsAutocompleteProps
   extends UseUniversityLevelSubGroupsProps,
-    AutocompleteProps<UniversityLevelSubGroupsQueryReturn[number]> {}
+    AutocompleteProps<
+      UniversityLevelSubGroupsQuery['getUniveristyLevelSubGroups'][number]
+    > {}
 
 export const UniversityLevelSubGroupsAutocomplete: React.FC<
   UniversityLevelSubGroupsAutocompleteProps

@@ -1,28 +1,49 @@
-import type { UniversityTypesQueryReturn } from '@/shared/api/graphql';
-import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
-import { universityTypes } from '../../actions';
+import { useLazyQuery } from '@apollo/client/react';
+import { useAsyncList, type AsyncListOptions } from '@react-stately/data';
+import { useEffect } from 'react';
+import { useIsMounted } from 'usehooks-ts';
+
+import {
+  universityTypesDocument,
+  UniversityTypesQuery,
+  UniversityTypesQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseUniversityTypesProps {
-  listOptions?: AsyncListOptions<UniversityTypesQueryReturn[number], string>;
+  listOptions?: AsyncListOptions<
+    UniversityTypesQuery['getUniversityTypes'][number],
+    string
+  >;
 }
 
 export const useUniversityTypes = (props: UseUniversityTypesProps = {}) => {
   const { listOptions } = props;
 
+  const isMounted = useIsMounted();
+
+  const [universityTypesQuery] = useLazyQuery<
+    UniversityTypesQuery,
+    UniversityTypesQueryVariables
+  >(universityTypesDocument);
   const list = useAsyncList({
     ...listOptions,
     load: async () => {
-      const formData = new FormData();
-      const response = await universityTypes(undefined, formData);
+      const { error, data } = await universityTypesQuery();
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getUniversityTypes };
     },
   });
 
+  useEffect(() => {
+    if (isMounted()) {
+      list.reload();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
   return { ...list };
 };
 

@@ -12,7 +12,6 @@ import React, { forwardRef } from 'react';
 export interface PasswordInputProps extends InputProps {
   defaultShowPass?: boolean;
   showPass?: boolean;
-  // eslint-disable-next-line no-unused-vars
   onShowPass?: (showPass?: boolean) => void;
 }
 

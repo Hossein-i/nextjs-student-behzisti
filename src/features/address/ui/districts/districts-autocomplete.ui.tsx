@@ -1,12 +1,14 @@
 'use client';
 
-import type { DistrictsByCountyQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
+
 import { useDistricts, type UseDistrictsProps } from './districts.hook';
+
+import type { DistrictsByCountyQuery } from '@/shared/api/graphql';
 
 export interface DistrictsAutocompleteProps
   extends UseDistrictsProps,
-    AutocompleteProps<DistrictsByCountyQueryReturn[number]> {}
+    AutocompleteProps<DistrictsByCountyQuery['getDeviatins'][number]> {}
 
 export const DistrictsAutocomplete = (props: DistrictsAutocompleteProps) => {
   const { countyId, listOptions, ...restProps } = props;

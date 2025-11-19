@@ -1,12 +1,14 @@
 'use client';
 
-import type { ProvincesQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
+
 import { useProvinces, type UseProvincesProps } from './provinces.hook';
+
+import type { ProvincesQuery } from '@/shared/api/graphql';
 
 export interface ProvincesAutocompleteProps
   extends UseProvincesProps,
-    AutocompleteProps<ProvincesQueryReturn[number]> {}
+    AutocompleteProps<ProvincesQuery['getProvinces'][number]> {}
 
 export const ProvincesAutocomplete = (props: ProvincesAutocompleteProps) => {
   const { listOptions, ...restProps } = props;

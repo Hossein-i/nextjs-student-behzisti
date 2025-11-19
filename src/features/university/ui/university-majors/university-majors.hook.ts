@@ -1,12 +1,20 @@
-import type { UniversityMajorsQueryReturn } from '@/shared/api/graphql';
-import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
+import { useLazyQuery } from '@apollo/client/react';
+import { useAsyncList, type AsyncListOptions } from '@react-stately/data';
 import { useEffect } from 'react';
 import { useIsMounted } from 'usehooks-ts';
-import { universityMajors } from '../../actions';
+
+import {
+  universityMajorsDocument,
+  type UniversityMajorsQuery,
+  type UniversityMajorsQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseUniversityMajorsProps {
   levelId: string;
-  listOptions?: AsyncListOptions<UniversityMajorsQueryReturn[number], string>;
+  listOptions?: AsyncListOptions<
+    UniversityMajorsQuery['getUniversityMajors'][number],
+    string
+  >;
 }
 
 export const useUniversityMajors = (
@@ -15,6 +23,12 @@ export const useUniversityMajors = (
   const { levelId, listOptions } = props;
 
   const isMounted = useIsMounted();
+
+  const [universityMajorsQuery] = useLazyQuery<
+    UniversityMajorsQuery,
+    UniversityMajorsQueryVariables
+  >(universityMajorsDocument);
+
   const list = useAsyncList({
     ...listOptions,
     load: async ({ filterText }) => {
@@ -22,15 +36,15 @@ export const useUniversityMajors = (
         return { items: [] };
       }
 
-      const formData = new FormData();
-      formData.set('levelId', filterText);
-      const response = await universityMajors(undefined, formData);
+      const { error, data } = await universityMajorsQuery({
+        variables: { dto: { levelId: parseInt(filterText) } },
+      });
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getUniversityMajors };
     },
   });
 

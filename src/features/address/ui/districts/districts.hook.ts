@@ -1,18 +1,31 @@
-import type { DistrictsByCountyQueryReturn } from '@/shared/api/graphql';
+import { useLazyQuery } from '@apollo/client/react';
 import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
 import { useEffect } from 'react';
 import { useIsMounted } from 'usehooks-ts';
-import { districtsByCounty } from '../../actions';
+
+import {
+  districtsByCountyDocument,
+  type DistrictsByCountyQuery,
+  type DistrictsByCountyQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseDistrictsProps {
   countyId: string;
-  listOptions?: AsyncListOptions<DistrictsByCountyQueryReturn[number], string>;
+  listOptions?: AsyncListOptions<
+    DistrictsByCountyQuery['getDeviatins'][number],
+    string
+  >;
 }
 
 export const useDistricts = (props: UseDistrictsProps) => {
   const { countyId, listOptions } = props;
 
   const isMounted = useIsMounted();
+
+  const [districtsByCountyQuery] = useLazyQuery<
+    DistrictsByCountyQuery,
+    DistrictsByCountyQueryVariables
+  >(districtsByCountyDocument);
   const list = useAsyncList({
     ...listOptions,
     initialFilterText: countyId,
@@ -21,15 +34,15 @@ export const useDistricts = (props: UseDistrictsProps) => {
         return { items: [] };
       }
 
-      const formData = new FormData();
-      formData.set('countyId', filterText);
-      const response = await districtsByCounty(undefined, formData);
+      const { error, data } = await districtsByCountyQuery({
+        variables: { dto: { countyId: parseInt(filterText) } },
+      });
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getDeviatins };
     },
   });
 

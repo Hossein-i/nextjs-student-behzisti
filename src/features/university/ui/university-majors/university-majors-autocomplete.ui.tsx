@@ -1,16 +1,18 @@
 'use client';
 
-import type { UniversityMajorsQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
 import React from 'react';
+
 import {
   useUniversityMajors,
   type UseUniversityMajorsProps,
 } from './university-majors.hook';
 
+import type { UniversityMajorsQuery } from '@/shared/api/graphql';
+
 export interface UniversityMajorsAutocompleteProps
   extends UseUniversityMajorsProps,
-    AutocompleteProps<UniversityMajorsQueryReturn[number]> {}
+    AutocompleteProps<UniversityMajorsQuery['getUniversityMajors'][number]> {}
 
 export const UniversityMajorsAutocomplete: React.FC<
   UniversityMajorsAutocompleteProps

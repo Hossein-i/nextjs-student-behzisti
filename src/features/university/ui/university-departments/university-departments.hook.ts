@@ -1,14 +1,19 @@
-import type { UniversityDepartmentsQueryReturn } from '@/shared/api/graphql';
-import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
+import { useLazyQuery } from '@apollo/client/react';
+import { useAsyncList, type AsyncListOptions } from '@react-stately/data';
 import { useEffect } from 'react';
 import { useIsMounted } from 'usehooks-ts';
-import { universityDepartments } from '../../actions';
+
+import {
+  universityDepartmentsDocument,
+  UniversityDepartmentsQuery,
+  UniversityDepartmentsQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseUniversityDepartmentsProps {
   countyId: string;
   typeId: string;
   listOptions?: AsyncListOptions<
-    UniversityDepartmentsQueryReturn[number],
+    UniversityDepartmentsQuery['getUniversityDepartments'][number],
     string
   >;
 }
@@ -19,6 +24,12 @@ export const useUniversityDepartments = (
   const { countyId, typeId, listOptions } = props;
 
   const isMounted = useIsMounted();
+
+  const [universityDepartmentsQuery] = useLazyQuery<
+    UniversityDepartmentsQuery,
+    UniversityDepartmentsQueryVariables
+  >(universityDepartmentsDocument);
+
   const list = useAsyncList({
     ...listOptions,
     load: async ({ filterText }) => {
@@ -32,16 +43,15 @@ export const useUniversityDepartments = (
         return { items: [] };
       }
 
-      const formData = new FormData();
-      formData.set('countyId', cid);
-      formData.set('typeId', tid);
-      const response = await universityDepartments(undefined, formData);
+      const { error, data } = await universityDepartmentsQuery({
+        variables: { dto: { countyId: parseInt(cid), typeId: parseInt(tid) } },
+      });
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getUniversityDepartments };
     },
   });
 

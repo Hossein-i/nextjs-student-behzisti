@@ -1,13 +1,18 @@
-import type { SubDistrictsByDistrictQueryReturn } from '@/shared/api/graphql';
+import { useLazyQuery } from '@apollo/client/react';
 import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
 import { useEffect } from 'react';
 import { useIsMounted } from 'usehooks-ts';
-import { subDistrictsByDistrict } from '../../actions';
+
+import {
+  subDistrictsByDistrictDocument,
+  type SubDistrictsByDistrictQuery,
+  type SubDistrictsByDistrictQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseSubDistrictsProps {
   deviationId: string;
   listOptions?: AsyncListOptions<
-    SubDistrictsByDistrictQueryReturn[number],
+    SubDistrictsByDistrictQuery['getSubDeviations'][number],
     string
   >;
 }
@@ -16,6 +21,11 @@ export const useSubDistricts = (props: UseSubDistrictsProps) => {
   const { deviationId, listOptions } = props;
 
   const isMounted = useIsMounted();
+
+  const [subDistrictsByDistrictQuery] = useLazyQuery<
+    SubDistrictsByDistrictQuery,
+    SubDistrictsByDistrictQueryVariables
+  >(subDistrictsByDistrictDocument);
   const list = useAsyncList({
     ...listOptions,
     initialFilterText: deviationId,
@@ -24,15 +34,15 @@ export const useSubDistricts = (props: UseSubDistrictsProps) => {
         return { items: [] };
       }
 
-      const formData = new FormData();
-      formData.set('deviationId', filterText);
-      const response = await subDistrictsByDistrict(undefined, formData);
+      const { error, data } = await subDistrictsByDistrictQuery({
+        variables: { dto: { deviationId: parseInt(filterText) } },
+      });
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getSubDeviations };
     },
   });
 

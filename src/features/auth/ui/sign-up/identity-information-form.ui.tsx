@@ -1,13 +1,18 @@
 'use client';
 
-import { inquiry } from '@/features/auth/actions';
-import type { SignUpVariables } from '@/features/auth/types';
-import { useMultiFormContext } from '@/features/multi-form/lib/hooks';
-import type { InquiryQueryReturn } from '@/shared/api/graphql';
-import { Caption, Subheadline } from '@/shared/ui/typography';
+import { useLazyQuery } from '@apollo/client/react';
 import { addToast, Button, Input } from '@heroui/react';
-import React, { useCallback, useState, useTransition } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Controller } from 'react-hook-form';
+
+import { useMultiFormContext } from '@/features/multi-form/lib/hooks';
+import {
+  inquiryDocument,
+  InquiryQuery,
+  InquiryQueryVariables,
+  SignUpMutationVariables,
+} from '@/shared/api/graphql';
+import { Caption, Subheadline } from '@/shared/ui/typography';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface IdentityInformationFormProps {}
@@ -15,18 +20,33 @@ export interface IdentityInformationFormProps {}
 export const IdentityInformationForm: React.FC<
   IdentityInformationFormProps
 > = () => {
-  const [covered, setCovered] =
-    useState<Array<keyof InquiryQueryReturn['folder']>>();
+  const { form } = useMultiFormContext<SignUpMutationVariables['dto']>();
+  const { control, watch, trigger, setValue, resetField } = form;
 
-  const [isPending, startTransition] = useTransition();
-  const { form } = useMultiFormContext<SignUpVariables>();
-  const { control, watch, trigger, setValue, setError, resetField } = form;
+  const [inquiryQuery, { called, loading }] = useLazyQuery<
+    InquiryQuery,
+    InquiryQueryVariables
+  >(inquiryDocument);
+
+  const [covered, setCovered] =
+    useState<Array<keyof InquiryQuery['getFolder'][number]>>();
 
   const isInquired =
     watch('person.firstName', '') !== '' || watch('person.lastName', '') !== '';
 
-  const renderCovered = useCallback(
-    (key: keyof InquiryQueryReturn['folder']) => {
+  const renderCovered = useCallback(() => {
+    if (!covered)
+      return (
+        <ul>
+          <li>
+            <Caption className="text-foreground-400">
+              لطفا ابتدا استعلام بگیرید.
+            </Caption>
+          </li>
+        </ul>
+      );
+
+    const status: Array<string> = [...covered].map((key) => {
       switch (key) {
         case 'Rehab':
           return '- پرونده معلولیت دارید.';
@@ -55,9 +75,22 @@ export const IdentityInformationForm: React.FC<
         default:
           return '';
       }
-    },
-    []
-  );
+    });
+
+    if (status.length < 1) {
+      status.push('شما تحت پوشش بهزیستی نیستید.');
+    }
+
+    return (
+      <ul>
+        {status.map((item, index) => (
+          <li key={`f-${index}`}>
+            <Caption className="text-foreground-400">{item}</Caption>
+          </li>
+        ))}
+      </ul>
+    );
+  }, [covered]);
 
   const resetForm = () => {
     resetField('person', {
@@ -69,107 +102,92 @@ export const IdentityInformationForm: React.FC<
         nid: '',
       },
     });
+    setCovered(undefined);
   };
 
-  const submitIdentityInquiry = async () => {
-    startTransition(async () => {
-      try {
-        const isValid = await trigger(['person.nid', 'person.birthDate'], {
-          shouldFocus: true,
-        });
-        if (!isValid) {
-          return;
-        }
+  const handleInquiryQuery = async () => {
+    try {
+      const isValid = await trigger(['person.nid', 'person.birthDate'], {
+        shouldFocus: true,
+      });
 
-        const formData = new FormData();
-        formData.set('nid', watch('person.nid'));
-        formData.set('birthDate', watch('person.birthDate'));
-
-        const response = await inquiry(undefined, formData);
-
-        if (response.message || !response.data) {
-          setError('person.nid', { message: response.message });
-          setError('person.birthDate', { message: response.message });
-
-          addToast({
-            title: response.message,
-            color: 'danger',
-          });
-          return;
-        }
-
-        setValue('person.firstName', response.data.user.name);
-        setValue('person.lastName', response.data.user.family);
-
-        const folder = Object.entries(response.data.folder);
-        const underCoverage = folder
-          .filter(
-            (entry): entry is [keyof InquiryQueryReturn['folder'], number] =>
-              typeof entry[1] === 'number' && entry[1] === 1
-          )
-          .map(([key]) => key);
-        setCovered(underCoverage);
-      } catch (error) {
-        console.error('[submitIdentityInquiry]: ', error);
+      if (!isValid) {
+        return;
       }
-    });
+
+      const { error, data } = await inquiryQuery({
+        variables: {
+          dto: {
+            nid: watch('person.nid'),
+            birthDate: watch('person.birthDate'),
+          },
+          nid: watch('person.nid'),
+        },
+      });
+      if (error || !data) {
+        throw new Error(error?.message);
+      }
+
+      setValue('person.firstName', data.getEstelam.name || '');
+      setValue('person.lastName', data.getEstelam.family || '');
+
+      const folder = Object.entries(data.getFolder[0]);
+      const underCoverage = folder
+        .filter(
+          (entry): entry is [keyof InquiryQuery['getFolder'][number], number] =>
+            typeof entry[1] === 'number' && entry[1] === 1
+        )
+        .map(([key]) => key);
+
+      setCovered(underCoverage);
+    } catch {
+      addToast({
+        title: 'خطای استعلام',
+        description: 'کد ملی یا تاریخ تولد اشتباه می باشد.',
+        color: 'danger',
+      });
+    }
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="space-y-2">
       <Controller
         control={control}
         name="person.nid"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <Input
-            ref={ref}
-            inputMode="decimal"
             label="کد ملی"
             description="کد ملی شما نام کاربری شماست پس صحت آن را بررسی نمایید."
+            inputMode="decimal"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
             readOnly={isInquired}
-            isDisabled={isPending}
+            isDisabled={called && loading}
             isRequired
             autoFocus
+            {...field}
           />
         )}
       />
       <Controller
         control={control}
         name="person.birthDate"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <Input
-            ref={ref}
             label="تاریخ تولد"
             placeholder="xxxx/xx/xx"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
             readOnly={isInquired}
-            isDisabled={isPending}
+            isDisabled={called && loading}
             isRequired
+            {...field}
           />
         )}
       />
@@ -188,8 +206,8 @@ export const IdentityInformationForm: React.FC<
             variant="shadow"
             color="primary"
             radius="full"
-            onPress={submitIdentityInquiry}
-            isLoading={isPending}
+            onPress={handleInquiryQuery}
+            isLoading={called && loading}
           >
             استعلام
           </Button>
@@ -199,26 +217,18 @@ export const IdentityInformationForm: React.FC<
         key="person.firstName"
         control={control}
         name="person.firstName"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <Input
-            ref={ref}
             label="نام"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
-            isDisabled={isPending}
+            isDisabled={called && loading}
             isRequired
             isReadOnly
+            {...field}
           />
         )}
       />
@@ -226,82 +236,44 @@ export const IdentityInformationForm: React.FC<
         key="person.lastName"
         control={control}
         name="person.lastName"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <Input
-            ref={ref}
             label="نام خانوادگی"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
-            isDisabled={isPending}
+            isDisabled={called && loading}
             isRequired
             isReadOnly
+            {...field}
           />
         )}
       />
       <Controller
         control={control}
         name="person.cellphone"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <Input
-            ref={ref}
-            inputMode="tel"
             label="شماره همراه"
             placeholder="09xxxxxxxx"
             description="رمز عبور به سامانه بعد از ثبت موفقیت امیز برای شما پیامک می شود، بنابراین از صحت شماره موبایل خود مطمئن شوید."
+            inputMode="tel"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
-            isDisabled={isPending}
+            isDisabled={called && loading}
             isRequired
+            {...field}
           />
         )}
       />
 
       <Subheadline>وضعیت تحت پوشش</Subheadline>
-      {covered ? (
-        <>
-          {covered.length === 0 ? (
-            <Caption className="text-foreground-400">
-              شما تحت پوشش بهزیستی نیستید.
-            </Caption>
-          ) : (
-            <ul>
-              {covered.map((key) => (
-                <li key={key}>
-                  <Caption className="text-foreground-400">
-                    {renderCovered(key)}
-                  </Caption>
-                </li>
-              ))}
-            </ul>
-          )}
-        </>
-      ) : (
-        <Caption className="text-foreground-400">
-          لطفا ابتدا استعلام بگیرید.
-        </Caption>
-      )}
+      {renderCovered()}
     </div>
   );
 };

@@ -1,85 +1,75 @@
-import { getSession } from '@/features/auth/api';
-import { config } from '@/shared/config';
+import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client';
 import {
-  ApolloClient,
-  ApolloError,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import { onError } from '@apollo/client/link/error';
+  CombinedGraphQLErrors,
+  CombinedProtocolErrors,
+  ServerError,
+} from '@apollo/client/errors';
+import { ErrorLink } from '@apollo/client/link/error';
 import { RetryLink } from '@apollo/client/link/retry';
-import type { RetryFunctionOptions } from '@apollo/client/link/retry/retryFunction';
+import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs';
+import { signOut } from 'next-auth/react';
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    for (const error of graphQLErrors) {
-      const { message, locations, path } = error;
+const shouldLogout = (message: string | undefined) => {
+  if (!message) return false;
 
-      console.error(
-        `[GraphQL error]: msg:  ${message}, loc: ${locations}, path: ${path}`
-      );
-    }
-  }
-
-  if (networkError) {
-    const { name, message, stack } = networkError;
-    console.error(
-      `[Network error]: name: ${name}, msg: ${message}, stack: ${stack}`
-    );
-  }
-});
-
-const customRetryIf: RetryFunctionOptions['retryIf'] = (error) => {
-  if (!(error instanceof ApolloError)) {
-    return false;
-  }
-
-  const { graphQLErrors, networkError } = error;
-
-  if (networkError) {
-    return true;
-  }
-
-  if (graphQLErrors) {
-    return !graphQLErrors.some((err) => {
-      return (
-        err.extensions?.code === 'UNAUTHENTICATED' ||
-        err.extensions?.code === 'FORBIDDEN' ||
-        err.message === "Cannot read property 'id' of undefined"
-      );
-    });
-  }
-
-  return false;
+  return message.includes("Cannot read property 'id' of undefined");
 };
 
-const retryLink = new RetryLink({
-  attempts: {
-    max: 3,
-    retryIf: customRetryIf,
-  },
+const errorLink = new ErrorLink(({ error }) => {
+  if (CombinedGraphQLErrors.is(error)) {
+    error.errors.forEach((err) => {
+      console.error(
+        `[GraphQL error]: Message: ${err.message}, Location: ${err.locations}, Path: ${err.path}`
+      );
+
+      if (shouldLogout(err.message)) {
+        signOut({ redirectTo: '/' });
+      }
+    });
+    return;
+  }
+
+  if (CombinedProtocolErrors.is(error)) {
+    error.errors.forEach((err) => {
+      console.error(
+        `[Protocol error]: Message: ${err.message}, Extensions: ${JSON.stringify(err.extensions)}`
+      );
+
+      if (shouldLogout(err.message)) {
+        signOut({ redirectTo: '/' });
+      }
+    });
+    return;
+  }
+
+  console.error(`[Network error]: ${error}`);
+
+  if (ServerError.is(error)) {
+    let serverMessage: string | undefined;
+
+    try {
+      const parsed = JSON.parse(error.bodyText);
+      serverMessage = parsed?.errors?.[0]?.message;
+
+      if (serverMessage) error.message = serverMessage;
+    } catch (e) {
+      console.error('Failed to parse server error:', e);
+    }
+
+    if (shouldLogout(serverMessage)) {
+      signOut({ redirectTo: '/' });
+    }
+  }
 });
 
-const authLink = setContext(async (_, { headers }) => {
-  const session = await getSession();
-  const token = session.user?.token;
+const retryLink = new RetryLink();
 
-  return {
-    headers: {
-      ...headers,
-      // Authorization: token ? `Bearer ${token}` : undefined,
-      token: token ? token : undefined,
-    },
-  };
-});
-
-const httpLink = new HttpLink({
-  uri: config.GQL_URL,
+const uploadHttpLink = new UploadHttpLink({
+  uri: '/api/graphql',
+  useGETForQueries: false,
 });
 
 export const apolloClient = new ApolloClient({
-  link: ApolloLink.from([errorLink, retryLink, authLink, httpLink]),
+  link: ApolloLink.from([errorLink, retryLink, uploadHttpLink]),
   cache: new InMemoryCache(),
 });

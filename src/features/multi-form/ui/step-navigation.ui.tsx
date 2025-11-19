@@ -2,11 +2,11 @@
 
 import { Button, cn } from '@heroui/react';
 import React from 'react';
+
 import { useMultiFormContext, UseMultiFormContextReturn } from '../lib/hooks';
 
 export interface StepNavigationProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
-  // eslint-disable-next-line no-unused-vars
   children?: (context: UseMultiFormContextReturn) => React.ReactNode;
 }
 

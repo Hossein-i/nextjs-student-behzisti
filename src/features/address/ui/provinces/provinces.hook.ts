@@ -1,27 +1,49 @@
-import type { ProvincesQueryReturn } from '@/shared/api/graphql';
-import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
-import { provinces } from '../../actions';
+import { useLazyQuery } from '@apollo/client/react';
+import { useAsyncList, type AsyncListOptions } from '@react-stately/data';
+import { useEffect } from 'react';
+import { useIsMounted } from 'usehooks-ts';
+
+import {
+  provincesDocument,
+  ProvincesQuery,
+  ProvincesQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseProvincesProps {
-  listOptions?: AsyncListOptions<ProvincesQueryReturn[number], string>;
+  listOptions?: AsyncListOptions<
+    ProvincesQuery['getProvinces'][number],
+    string
+  >;
 }
 
 export const useProvinces = (props: UseProvincesProps = {}) => {
   const { listOptions } = props;
 
+  const isMounted = useIsMounted();
+
+  const [provincesQuery] = useLazyQuery<
+    ProvincesQuery,
+    ProvincesQueryVariables
+  >(provincesDocument);
   const list = useAsyncList({
     ...listOptions,
     load: async () => {
-      const formData = new FormData();
-      const response = await provinces(undefined, formData);
+      const { error, data } = await provincesQuery();
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getProvinces };
     },
   });
+
+  useEffect(() => {
+    if (isMounted()) {
+      list.reload();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   return { ...list };
 };

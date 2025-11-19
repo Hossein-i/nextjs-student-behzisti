@@ -1,7 +1,6 @@
 'use client';
 
-import { MultiForm } from '@/features/multi-form/ui';
-import { Placeholder } from '@/shared/ui/placeholder';
+import { useMutation } from '@apollo/client/react';
 import {
   AcademicCapIcon,
   MapPinIcon,
@@ -9,10 +8,18 @@ import {
 } from '@heroicons/react/24/outline';
 import { addToast } from '@heroui/react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import React from 'react';
-import { signUp } from '../../actions';
-import { signUpSchema } from '../../lib/validations/sign-up.validation';
-import type { SignUpVariables } from '../../types';
+
+import { signUpSchema } from '../../schemas/sign-up.schema';
+
+import { MultiForm } from '@/features/multi-form/ui';
+import {
+  signUpDocument,
+  SignUpMutation,
+  SignUpMutationVariables,
+} from '@/shared/api/graphql';
+import { Placeholder } from '@/shared/ui/placeholder';
 
 const IdentityInformationForm = dynamic(
   async () =>
@@ -51,23 +58,33 @@ const EducationInformationForm = dynamic(
 export interface SignUpFormProps {}
 
 export const SignUpForm: React.FC<SignUpFormProps> = () => {
-  const handleSubmit = async (data: object) => {
-    const formData = new FormData();
+  const router = useRouter();
 
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const value = data[key as keyof typeof data];
-        formData.set(key, JSON.stringify(value));
+  const [signUpMutation] = useMutation<SignUpMutation, SignUpMutationVariables>(
+    signUpDocument
+  );
+
+  const handleSubmit = async (dto: SignUpMutationVariables['dto']) => {
+    try {
+      const { error, data } = await signUpMutation({ variables: { dto } });
+
+      if (error || !data) {
+        throw new Error(error?.message);
       }
+      router.push('/auth');
+    } catch (error) {
+      const err = error as Error;
+      addToast({
+        title: 'خطای ثبت نام',
+        description: err.message,
+        color: 'danger',
+      });
     }
-    const response = await signUp(undefined, formData);
-
-    addToast({ title: response.message, color: 'danger' });
   };
 
   return (
     <MultiForm
-      defaultValues={{} as SignUpVariables}
+      defaultValues={{} as SignUpMutationVariables['dto']}
       stepFields={['person', 'address', 'university']}
       validationSchema={signUpSchema}
       onSubmit={handleSubmit}

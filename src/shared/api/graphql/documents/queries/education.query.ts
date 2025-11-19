@@ -1,13 +1,5 @@
 import { gql } from '@apollo/client';
-import { apolloClient } from '../../base';
-import type {
-  GetEducationLevelsQuery,
-  GetEducationLevelsQueryVariables,
-  GetTermsByEducationLevelQuery,
-  GetTermsByEducationLevelQueryVariables,
-} from '../../generates';
 
-// documents
 export const educationLevelsDocument = gql`
   query getEducationLevels {
     getDetails {
@@ -22,12 +14,14 @@ export const educationLevelsDocument = gql`
         birthDate
       }
       major {
+        id
         title
         level {
           title
         }
       }
       department {
+        id
         title
         type {
           id
@@ -88,38 +82,15 @@ export const termsByEducationLevelDocument = gql`
   }
 `;
 
-// queries
-export const educationLevelsQuery = async () => {
-  const { data } = await apolloClient.query<
-    GetEducationLevelsQuery,
-    GetEducationLevelsQueryVariables
-  >({
-    query: educationLevelsDocument,
-  });
-
-  return data.getDetails;
-};
-
-export const termsByEducationLevelQuery = async (
-  dto: GetTermsByEducationLevelQueryVariables
-) => {
-  const { eid } = dto;
-
-  const { data } = await apolloClient.query<
-    GetTermsByEducationLevelQuery,
-    GetTermsByEducationLevelQueryVariables
-  >({
-    query: termsByEducationLevelDocument,
-    variables: { eid },
-  });
-
-  return data.getTerms;
-};
-
-// types
-export type EducationLevelsQueryReturn = Awaited<
-  ReturnType<typeof educationLevelsQuery>
->;
-export type TermsByEducationLevelQueryReturn = Awaited<
-  ReturnType<typeof termsByEducationLevelQuery>
->;
+export const educationYearsDocument = gql`
+  query getEducationYears {
+    getYears {
+      id
+      title
+      isEnabled
+      term1
+      term2
+      term3
+    }
+  }
+`;

@@ -1,16 +1,20 @@
 'use client';
 
-import type { UniversityDepartmentsQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
 import React from 'react';
+
 import {
   useUniversityDepartments,
   type UseUniversityDepartmentsProps,
 } from './university-departments.hook';
 
+import type { UniversityDepartmentsQuery } from '@/shared/api/graphql';
+
 export interface UniversityDepartmentsAutocompleteProps
   extends UseUniversityDepartmentsProps,
-    AutocompleteProps<UniversityDepartmentsQueryReturn[number]> {}
+    AutocompleteProps<
+      UniversityDepartmentsQuery['getUniversityDepartments'][number]
+    > {}
 
 export const UniversityDepartmentsAutocomplete: React.FC<
   UniversityDepartmentsAutocompleteProps

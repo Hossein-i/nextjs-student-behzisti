@@ -1,10 +1,17 @@
-import type { UniversityLevelGroupsQueryReturn } from '@/shared/api/graphql';
-import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
-import { universityLevelGroups } from '../../actions';
+import { useLazyQuery } from '@apollo/client/react';
+import { useAsyncList, type AsyncListOptions } from '@react-stately/data';
+import { useEffect } from 'react';
+import { useIsMounted } from 'usehooks-ts';
+
+import {
+  universityLevelGroupsDocument,
+  UniversityLevelGroupsQuery,
+  UniversityLevelGroupsQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseUniversityLevelGroupsProps {
   listOptions?: AsyncListOptions<
-    UniversityLevelGroupsQueryReturn[number],
+    UniversityLevelGroupsQuery['getUniveristyLevelGroups'][number],
     string
   >;
 }
@@ -14,19 +21,32 @@ export const useUniversityLevelGroups = (
 ) => {
   const { listOptions } = props;
 
+  const isMounted = useIsMounted();
+
+  const [universityLevelGroupsQuery] = useLazyQuery<
+    UniversityLevelGroupsQuery,
+    UniversityLevelGroupsQueryVariables
+  >(universityLevelGroupsDocument);
+
   const list = useAsyncList({
     ...listOptions,
     load: async () => {
-      const formData = new FormData();
-      const response = await universityLevelGroups(undefined, formData);
+      const { error, data } = await universityLevelGroupsQuery();
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getUniveristyLevelGroups };
     },
   });
+
+  useEffect(() => {
+    if (isMounted()) {
+      list.reload();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   return { ...list };
 };

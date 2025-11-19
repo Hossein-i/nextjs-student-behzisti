@@ -1,12 +1,20 @@
-import type { UniversityLevelsQueryReturn } from '@/shared/api/graphql';
+import { useLazyQuery } from '@apollo/client/react';
 import { type AsyncListOptions, useAsyncList } from '@react-stately/data';
 import { useEffect } from 'react';
 import { useIsMounted } from 'usehooks-ts';
-import { universityLevels } from '../../actions';
+
+import {
+  universityLevelsDocument,
+  type UniversityLevelsQuery,
+  type UniversityLevelsQueryVariables,
+} from '@/shared/api/graphql';
 
 export interface UseUniversityLevelsProps {
   subGroupId: string;
-  listOptions?: AsyncListOptions<UniversityLevelsQueryReturn[number], string>;
+  listOptions?: AsyncListOptions<
+    UniversityLevelsQuery['getUniversityLevels'][number],
+    string
+  >;
 }
 
 export const useUniversityLevels = (
@@ -15,6 +23,11 @@ export const useUniversityLevels = (
   const { subGroupId, listOptions } = props;
 
   const isMounted = useIsMounted();
+
+  const [universityLevelsQuery] = useLazyQuery<
+    UniversityLevelsQuery,
+    UniversityLevelsQueryVariables
+  >(universityLevelsDocument);
   const list = useAsyncList({
     ...listOptions,
     load: async ({ filterText }) => {
@@ -22,15 +35,15 @@ export const useUniversityLevels = (
         return { items: [] };
       }
 
-      const formData = new FormData();
-      formData.set('subGroupId', filterText);
-      const response = await universityLevels(undefined, formData);
+      const { error, data } = await universityLevelsQuery({
+        variables: { dto: { subGroupId: parseInt(filterText) } },
+      });
 
-      if (response.message || !response.data) {
+      if (error || !data) {
         return { items: [] };
       }
 
-      return { items: response.data };
+      return { items: data.getUniversityLevels };
     },
   });
 

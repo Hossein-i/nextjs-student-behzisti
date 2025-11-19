@@ -1,15 +1,19 @@
 'use client';
 
-import type { SubDistrictsByDistrictQueryReturn } from '@/shared/api/graphql';
 import { Autocomplete, type AutocompleteProps } from '@heroui/react';
+
 import {
   useSubDistricts,
   type UseSubDistrictsProps,
 } from './sub-districts.hook';
 
+import type { SubDistrictsByDistrictQuery } from '@/shared/api/graphql';
+
 export interface SubDistrictsAutocompleteProps
   extends UseSubDistrictsProps,
-    AutocompleteProps<SubDistrictsByDistrictQueryReturn[number]> {}
+    AutocompleteProps<
+      SubDistrictsByDistrictQuery['getSubDeviations'][number]
+    > {}
 
 export const SubDistrictsAutocomplete = (
   props: SubDistrictsAutocompleteProps
