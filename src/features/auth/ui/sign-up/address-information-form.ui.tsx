@@ -1,16 +1,17 @@
 'use client';
 
+import { AutocompleteItem, Input } from '@heroui/react';
+import React from 'react';
+import { Controller } from 'react-hook-form';
+
 import {
   CountiesAutocomplete,
   DistrictsAutocomplete,
   ProvincesAutocomplete,
   SubDistrictsAutocomplete,
 } from '@/features/address/ui';
-import type { SignUpVariables } from '@/features/auth/types';
 import { useMultiFormContext } from '@/features/multi-form/lib/hooks';
-import { AutocompleteItem, Input } from '@heroui/react';
-import React from 'react';
-import { Controller } from 'react-hook-form';
+import { SignUpMutationVariables } from '@/shared/api/graphql';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AddressInformationFormProps {}
@@ -18,7 +19,7 @@ export interface AddressInformationFormProps {}
 export const AddressInformationForm: React.FC<
   AddressInformationFormProps
 > = () => {
-  const { form } = useMultiFormContext<SignUpVariables>();
+  const { form } = useMultiFormContext<SignUpMutationVariables['dto']>();
   const { control, watch, setValue } = form;
 
   const hasProvince = !!watch('address.province');
@@ -26,33 +27,27 @@ export const AddressInformationForm: React.FC<
   const hasDeviation = !!watch('address.deviation');
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="space-y-2">
       <Controller
         control={control}
         name="address.province"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <ProvincesAutocomplete
-            ref={ref}
             label="استان"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            selectedKey={value}
-            onBlur={onBlur}
+            isInvalid={invalid}
+            errorMessage={error?.message}
+            isRequired
+            {...field}
+            selectedKey={field.value}
             onSelectionChange={(key) => {
-              onChange(key);
+              field.onChange(key);
               setValue('address.county', '');
               setValue('address.deviation', '');
               setValue('address.subDeviation', '');
             }}
-            validationBehavior="aria"
-            isInvalid={invalid}
-            errorMessage={error?.message}
-            isRequired
           >
             {(item) => (
               <AutocompleteItem key={item.id} textValue={item.title}>
@@ -65,30 +60,24 @@ export const AddressInformationForm: React.FC<
       <Controller
         control={control}
         name="address.county"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <CountiesAutocomplete
             provinceId={watch('address.province')}
-            ref={ref}
             label="شهرستان"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            selectedKey={value}
-            onBlur={onBlur}
-            onSelectionChange={(key) => {
-              onChange(key);
-              setValue('address.deviation', '');
-              setValue('address.subDeviation', '');
-            }}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
             isReadOnly={!hasProvince}
             isRequired
+            {...field}
+            selectedKey={field.value}
+            onSelectionChange={(key) => {
+              field.onChange(key);
+              setValue('address.deviation', '');
+              setValue('address.subDeviation', '');
+            }}
           >
             {(item) => (
               <AutocompleteItem key={item.id}>{item.title}</AutocompleteItem>
@@ -99,29 +88,23 @@ export const AddressInformationForm: React.FC<
       <Controller
         control={control}
         name="address.deviation"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <DistrictsAutocomplete
             countyId={watch('address.county')}
-            ref={ref}
             label="بخش"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            selectedKey={value}
-            onBlur={onBlur}
-            onSelectionChange={(key) => {
-              onChange(key);
-              setValue('address.subDeviation', '');
-            }}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
             isReadOnly={!hasCounty}
             isRequired
+            {...field}
+            selectedKey={field.value}
+            onSelectionChange={(key) => {
+              field.onChange(key);
+              setValue('address.subDeviation', '');
+            }}
           >
             {(item) => (
               <AutocompleteItem key={item.id}>{item.title}</AutocompleteItem>
@@ -132,26 +115,20 @@ export const AddressInformationForm: React.FC<
       <Controller
         control={control}
         name="address.subDeviation"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <SubDistrictsAutocomplete
             deviationId={watch('address.deviation')}
-            ref={ref}
             label="شهر یا روستا"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            selectedKey={value}
-            onBlur={onBlur}
-            onSelectionChange={onChange}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
             isReadOnly={!hasDeviation}
             isRequired
+            {...field}
+            selectedKey={field.value}
+            onSelectionChange={field.onChange}
           >
             {(item) => (
               <AutocompleteItem key={item.id}>{item.title}</AutocompleteItem>
@@ -162,24 +139,16 @@ export const AddressInformationForm: React.FC<
       <Controller
         control={control}
         name="address.AddressLine1"
-        render={({
-          field: { name, value, onChange, onBlur, ref },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <Input
-            ref={ref}
             label="آدرس کامل"
             variant="bordered"
             color="primary"
             radius="full"
-            name={name}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-            validationBehavior="aria"
             isInvalid={invalid}
             errorMessage={error?.message}
             isRequired
+            {...field}
           />
         )}
       />

@@ -8,11 +8,11 @@ import {
   DropdownTrigger,
   User as HeroUIUser,
 } from '@heroui/react';
+import { User } from 'next-auth';
 import React from 'react';
-import { User } from '../types';
 
 export interface UserMenuProps {
-  user: User;
+  user: Omit<User, 'token'>;
 }
 
 export const UserMenu: React.FC<UserMenuProps> = (props) => {
@@ -22,7 +22,7 @@ export const UserMenu: React.FC<UserMenuProps> = (props) => {
     <Dropdown>
       <DropdownTrigger className="cursor-pointer">
         <HeroUIUser
-          name={[user.firstName, user.lastName].join(' ')}
+          name={user.name}
           avatarProps={{ size: 'sm' }}
           className="px-2 py-1"
           classNames={{ wrapper: 'max-md:hidden' }}

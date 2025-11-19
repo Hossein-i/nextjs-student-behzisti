@@ -1,34 +1,31 @@
 'use client';
 
-import { BlurredCard } from '@/shared/ui/blurred-card';
-import { Logo } from '@/shared/ui/logo';
-import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
-import { Caption } from '@/shared/ui/typography';
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
 } from '@heroui/react';
+import type { User } from 'next-auth';
 import Link from 'next/link';
 import React from 'react';
-import { User } from '../types';
+
 import { UserMenu } from './user-menu.ui';
 
+import { BlurredCard } from '@/shared/ui/blurred-card';
+import { Logo } from '@/shared/ui/logo';
+import { ThemeSwitcher } from '@/shared/ui/theme-switcher';
+import { Caption } from '@/shared/ui/typography';
+
 export interface NavbarProps {
-  user: User;
+  user: Omit<User, 'token'>;
 }
 
 export const Navbar: React.FC<NavbarProps> = (props) => {
   const { user } = props;
 
   return (
-    <HeroUINavbar
-      maxWidth="2xl"
-      className="bg-transparent"
-      isBlurred={false}
-      shouldHideOnScroll
-    >
+    <HeroUINavbar maxWidth="2xl" className="bg-transparent" isBlurred={false}>
       <NavbarContent>
         <NavbarItem>
           <NavbarBrand>

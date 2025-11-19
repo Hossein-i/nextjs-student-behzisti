@@ -15,7 +15,6 @@ export const Background: React.FC<BackgroundProps> = () => {
         className="object-cover"
         placeholder="blur"
         sizes="100vw"
-        quality={100}
         fill
       />
     </section>

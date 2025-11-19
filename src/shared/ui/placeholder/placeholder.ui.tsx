@@ -1,8 +1,9 @@
 import { cn } from '@heroui/react';
 import React, { HTMLAttributes, ReactNode } from 'react';
 
-import { hasReactNode } from '@/shared/lib/react';
 import { Text, Title } from '../typography';
+
+import { hasReactNode } from '@/shared/lib/react';
 
 export interface PlaceholderProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -39,7 +40,7 @@ export const Placeholder: React.FC<PlaceholderProps> = ({
   return (
     <section
       className={cn(
-        'flex flex-col items-center justify-center gap-6 overflow-hidden p-8',
+        'flex flex-col items-center justify-center gap-6 overflow-hidden p-4',
         className
       )}
       {...restProps}

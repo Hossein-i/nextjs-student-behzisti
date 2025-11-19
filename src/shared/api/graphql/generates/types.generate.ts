@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-unused-vars */
-import type {
+import {
   FieldPolicy,
   FieldReadFunction,
   TypePolicies,
@@ -33,8 +31,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  DateTime: { input: any; output: any };
-  Upload: { input: any; output: any };
+  DateTime: { input: unknown; output: unknown };
+  Upload: { input: unknown; output: unknown };
 };
 
 export type AcceptanceDto = {
@@ -833,6 +831,24 @@ export type PasswordResetRequestMutation = {
   ForgotPassword: boolean;
 };
 
+export type MajorMutationVariables = Exact<{
+  dto: UpdateMajorDto;
+}>;
+
+export type MajorMutation = {
+  __typename?: 'Mutation';
+  UpdateMajor: { __typename?: 'EducationDetail'; id: string };
+};
+
+export type TermMutationVariables = Exact<{
+  dto: TermDto;
+}>;
+
+export type TermMutation = {
+  __typename?: 'Mutation';
+  RegisterTerm: { __typename?: 'Term'; id: string };
+};
+
 export type ProvincesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ProvincesQuery = {
@@ -911,22 +927,24 @@ export type GetEducationLevelsQuery = {
     __typename?: 'EducationDetail';
     id: string;
     studentNumber: string;
-    UniversityAcceptanceDate: any;
+    UniversityAcceptanceDate: unknown;
     student: {
       __typename?: 'Student';
       id: string;
       firstName: string;
       lastName: string;
       nid: string;
-      birthDate: any;
+      birthDate: unknown;
     };
     major: {
       __typename?: 'UniversityMajor';
+      id: string;
       title: string;
       level: { __typename?: 'UniversityLevel'; title: string };
     };
     department: {
       __typename?: 'UniversityDepartment';
+      id: string;
       title: string;
       type: { __typename?: 'UniversityType'; id: string; title: string };
     };
@@ -949,14 +967,14 @@ export type GetTermsByEducationLevelQuery = {
       __typename?: 'EducationDetail';
       id: string;
       studentNumber: string;
-      UniversityAcceptanceDate: any;
+      UniversityAcceptanceDate: unknown;
       student: {
         __typename?: 'Student';
         id: string;
         firstName: string;
         lastName: string;
         nid: string;
-        birthDate: any;
+        birthDate: unknown;
       };
       major: {
         __typename?: 'UniversityMajor';
@@ -982,6 +1000,21 @@ export type GetTermsByEducationLevelQuery = {
       CARD: string;
       number: string;
     } | null;
+  }>;
+};
+
+export type GetEducationYearsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetEducationYearsQuery = {
+  __typename?: 'Query';
+  getYears: Array<{
+    __typename?: 'Year';
+    id: string;
+    title: string;
+    isEnabled?: boolean | null;
+    term1?: boolean | null;
+    term2?: boolean | null;
+    term3?: boolean | null;
   }>;
 };
 
@@ -1068,14 +1101,14 @@ export type AccountDetailKeySpecifier = (
   | AccountDetailKeySpecifier
 )[];
 export type AccountDetailFieldPolicy = {
-  CARD?: FieldPolicy<any> | FieldReadFunction<any>;
-  IBN?: FieldPolicy<any> | FieldReadFunction<any>;
-  Number?: FieldPolicy<any> | FieldReadFunction<any>;
+  CARD?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  IBN?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Number?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type BasicItemKeySpecifier = ('id' | 'title' | BasicItemKeySpecifier)[];
 export type BasicItemFieldPolicy = {
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type CostKeySpecifier = (
   | 'fixed'
@@ -1084,9 +1117,9 @@ export type CostKeySpecifier = (
   | CostKeySpecifier
 )[];
 export type CostFieldPolicy = {
-  fixed?: FieldPolicy<any> | FieldReadFunction<any>;
-  total?: FieldPolicy<any> | FieldReadFunction<any>;
-  variable?: FieldPolicy<any> | FieldReadFunction<any>;
+  fixed?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  total?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  variable?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type CountyKeySpecifier = (
   | 'creationDateTime'
@@ -1097,11 +1130,11 @@ export type CountyKeySpecifier = (
   | CountyKeySpecifier
 )[];
 export type CountyFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  province?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  province?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type DeviationKeySpecifier = (
   | 'county'
@@ -1112,11 +1145,11 @@ export type DeviationKeySpecifier = (
   | DeviationKeySpecifier
 )[];
 export type DeviationFieldPolicy = {
-  county?: FieldPolicy<any> | FieldReadFunction<any>;
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  county?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type EducationDetailKeySpecifier = (
   | 'UniversityAcceptanceDate'
@@ -1131,15 +1164,15 @@ export type EducationDetailKeySpecifier = (
   | EducationDetailKeySpecifier
 )[];
 export type EducationDetailFieldPolicy = {
-  UniversityAcceptanceDate?: FieldPolicy<any> | FieldReadFunction<any>;
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  department?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  major?: FieldPolicy<any> | FieldReadFunction<any>;
-  student?: FieldPolicy<any> | FieldReadFunction<any>;
-  studentNumber?: FieldPolicy<any> | FieldReadFunction<any>;
-  terms?: FieldPolicy<any> | FieldReadFunction<any>;
+  UniversityAcceptanceDate?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  department?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  major?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  student?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  studentNumber?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  terms?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type EstelamResultKeySpecifier = (
   | 'family'
@@ -1148,9 +1181,9 @@ export type EstelamResultKeySpecifier = (
   | EstelamResultKeySpecifier
 )[];
 export type EstelamResultFieldPolicy = {
-  family?: FieldPolicy<any> | FieldReadFunction<any>;
-  fatherName?: FieldPolicy<any> | FieldReadFunction<any>;
-  name?: FieldPolicy<any> | FieldReadFunction<any>;
+  family?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  fatherName?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  name?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type FileContentKeySpecifier = (
   | 'content'
@@ -1160,10 +1193,10 @@ export type FileContentKeySpecifier = (
   | FileContentKeySpecifier
 )[];
 export type FileContentFieldPolicy = {
-  content?: FieldPolicy<any> | FieldReadFunction<any>;
-  encoding?: FieldPolicy<any> | FieldReadFunction<any>;
-  mimetype?: FieldPolicy<any> | FieldReadFunction<any>;
-  name?: FieldPolicy<any> | FieldReadFunction<any>;
+  content?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  encoding?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  mimetype?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  name?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type FoldersResultKeySpecifier = (
   | 'CP'
@@ -1182,19 +1215,19 @@ export type FoldersResultKeySpecifier = (
   | FoldersResultKeySpecifier
 )[];
 export type FoldersResultFieldPolicy = {
-  CP?: FieldPolicy<any> | FieldReadFunction<any>;
-  Commision?: FieldPolicy<any> | FieldReadFunction<any>;
-  Emdad?: FieldPolicy<any> | FieldReadFunction<any>;
-  EmdadTakhis?: FieldPolicy<any> | FieldReadFunction<any>;
-  Farzan?: FieldPolicy<any> | FieldReadFunction<any>;
-  Rehab?: FieldPolicy<any> | FieldReadFunction<any>;
-  RehabChild?: FieldPolicy<any> | FieldReadFunction<any>;
-  Zanan?: FieldPolicy<any> | FieldReadFunction<any>;
-  ZananChild?: FieldPolicy<any> | FieldReadFunction<any>;
-  ZananPosht?: FieldPolicy<any> | FieldReadFunction<any>;
-  ZananPoshtChild?: FieldPolicy<any> | FieldReadFunction<any>;
-  ZananTarkhis?: FieldPolicy<any> | FieldReadFunction<any>;
-  ZananTarkhisChild?: FieldPolicy<any> | FieldReadFunction<any>;
+  CP?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Commision?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Emdad?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  EmdadTakhis?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Farzan?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Rehab?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RehabChild?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Zanan?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ZananChild?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ZananPosht?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ZananPoshtChild?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ZananTarkhis?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ZananTarkhisChild?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type MutationKeySpecifier = (
   | 'AcceptTransaction'
@@ -1225,31 +1258,31 @@ export type MutationKeySpecifier = (
   | MutationKeySpecifier
 )[];
 export type MutationFieldPolicy = {
-  AcceptTransaction?: FieldPolicy<any> | FieldReadFunction<any>;
-  Authenticate?: FieldPolicy<any> | FieldReadFunction<any>;
-  CalculateTransaction?: FieldPolicy<any> | FieldReadFunction<any>;
-  ChangeCity?: FieldPolicy<any> | FieldReadFunction<any>;
-  DeleteTransaction?: FieldPolicy<any> | FieldReadFunction<any>;
-  ForgotPassword?: FieldPolicy<any> | FieldReadFunction<any>;
-  Login?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterDepartment?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterGroup?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterLevel?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterReshte?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterSubGroup?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterTerm?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterTransaction?: FieldPolicy<any> | FieldReadFunction<any>;
-  RegisterYear?: FieldPolicy<any> | FieldReadFunction<any>;
-  UpdateMajor?: FieldPolicy<any> | FieldReadFunction<any>;
-  accept?: FieldPolicy<any> | FieldReadFunction<any>;
-  acceptModir?: FieldPolicy<any> | FieldReadFunction<any>;
-  chaneCellphone?: FieldPolicy<any> | FieldReadFunction<any>;
-  checkList?: FieldPolicy<any> | FieldReadFunction<any>;
-  deleteTerm?: FieldPolicy<any> | FieldReadFunction<any>;
-  registerStudent?: FieldPolicy<any> | FieldReadFunction<any>;
-  registerUser?: FieldPolicy<any> | FieldReadFunction<any>;
-  removeAdminTerm?: FieldPolicy<any> | FieldReadFunction<any>;
-  removeShahrestan?: FieldPolicy<any> | FieldReadFunction<any>;
+  AcceptTransaction?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Authenticate?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  CalculateTransaction?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ChangeCity?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  DeleteTransaction?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ForgotPassword?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Login?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterDepartment?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterGroup?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterLevel?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterReshte?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterSubGroup?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterTerm?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterTransaction?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  RegisterYear?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  UpdateMajor?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  accept?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  acceptModir?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  chaneCellphone?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  checkList?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  deleteTerm?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  registerStudent?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  registerUser?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  removeAdminTerm?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  removeShahrestan?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type ProvinceKeySpecifier = (
   | 'creationDateTime'
@@ -1259,10 +1292,10 @@ export type ProvinceKeySpecifier = (
   | ProvinceKeySpecifier
 )[];
 export type ProvinceFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type QueryKeySpecifier = (
   | 'Version'
@@ -1292,30 +1325,32 @@ export type QueryKeySpecifier = (
   | QueryKeySpecifier
 )[];
 export type QueryFieldPolicy = {
-  Version?: FieldPolicy<any> | FieldReadFunction<any>;
-  getCounties?: FieldPolicy<any> | FieldReadFunction<any>;
-  getDetails?: FieldPolicy<any> | FieldReadFunction<any>;
-  getDeviatins?: FieldPolicy<any> | FieldReadFunction<any>;
-  getEstelam?: FieldPolicy<any> | FieldReadFunction<any>;
-  getFolder?: FieldPolicy<any> | FieldReadFunction<any>;
-  getProvinces?: FieldPolicy<any> | FieldReadFunction<any>;
-  getRegistrationReason?: FieldPolicy<any> | FieldReadFunction<any>;
-  getReport?: FieldPolicy<any> | FieldReadFunction<any>;
-  getReportByFolder?: FieldPolicy<any> | FieldReadFunction<any>;
-  getStudents?: FieldPolicy<any> | FieldReadFunction<any>;
-  getSubDeviations?: FieldPolicy<any> | FieldReadFunction<any>;
-  getTerms?: FieldPolicy<any> | FieldReadFunction<any>;
-  getTermsList?: FieldPolicy<any> | FieldReadFunction<any>;
-  getTransactions?: FieldPolicy<any> | FieldReadFunction<any>;
-  getUniveristyLevelGroups?: FieldPolicy<any> | FieldReadFunction<any>;
-  getUniveristyLevelSubGroups?: FieldPolicy<any> | FieldReadFunction<any>;
-  getUniversityDepartments?: FieldPolicy<any> | FieldReadFunction<any>;
-  getUniversityLevels?: FieldPolicy<any> | FieldReadFunction<any>;
-  getUniversityMajors?: FieldPolicy<any> | FieldReadFunction<any>;
-  getUniversityTypes?: FieldPolicy<any> | FieldReadFunction<any>;
-  getUsers?: FieldPolicy<any> | FieldReadFunction<any>;
-  getYears?: FieldPolicy<any> | FieldReadFunction<any>;
-  searchMajor?: FieldPolicy<any> | FieldReadFunction<any>;
+  Version?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getCounties?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getDetails?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getDeviatins?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getEstelam?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getFolder?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getProvinces?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getRegistrationReason?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getReport?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getReportByFolder?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getStudents?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getSubDeviations?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getTerms?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getTermsList?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getTransactions?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getUniveristyLevelGroups?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getUniveristyLevelSubGroups?:
+    | FieldPolicy<unknown>
+    | FieldReadFunction<unknown>;
+  getUniversityDepartments?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getUniversityLevels?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getUniversityMajors?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getUniversityTypes?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getUsers?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getYears?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  searchMajor?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type ReportStudentByFolderDtoKeySpecifier = (
   | 'cnt'
@@ -1324,9 +1359,9 @@ export type ReportStudentByFolderDtoKeySpecifier = (
   | ReportStudentByFolderDtoKeySpecifier
 )[];
 export type ReportStudentByFolderDtoFieldPolicy = {
-  cnt?: FieldPolicy<any> | FieldReadFunction<any>;
-  folder?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  cnt?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  folder?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type ReportStudentDtoKeySpecifier = (
   | 'AzadEslami'
@@ -1344,18 +1379,18 @@ export type ReportStudentDtoKeySpecifier = (
   | ReportStudentDtoKeySpecifier
 )[];
 export type ReportStudentDtoFieldPolicy = {
-  AzadEslami?: FieldPolicy<any> | FieldReadFunction<any>;
-  DolatiShabane?: FieldPolicy<any> | FieldReadFunction<any>;
-  DolatoRoozane?: FieldPolicy<any> | FieldReadFunction<any>;
-  Elmi?: FieldPolicy<any> | FieldReadFunction<any>;
-  GheiEntefaee?: FieldPolicy<any> | FieldReadFunction<any>;
-  Hoze?: FieldPolicy<any> | FieldReadFunction<any>;
-  Majazi?: FieldPolicy<any> | FieldReadFunction<any>;
-  Moozeshkade?: FieldPolicy<any> | FieldReadFunction<any>;
-  Pardis?: FieldPolicy<any> | FieldReadFunction<any>;
-  PardisInt?: FieldPolicy<any> | FieldReadFunction<any>;
-  Payamnoor?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  AzadEslami?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  DolatiShabane?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  DolatoRoozane?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Elmi?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  GheiEntefaee?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Hoze?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Majazi?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Moozeshkade?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Pardis?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  PardisInt?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  Payamnoor?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type StudentKeySpecifier = (
   | 'AddressLine1'
@@ -1375,20 +1410,20 @@ export type StudentKeySpecifier = (
   | StudentKeySpecifier
 )[];
 export type StudentFieldPolicy = {
-  AddressLine1?: FieldPolicy<any> | FieldReadFunction<any>;
-  birthDate?: FieldPolicy<any> | FieldReadFunction<any>;
-  cellphone?: FieldPolicy<any> | FieldReadFunction<any>;
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  educations?: FieldPolicy<any> | FieldReadFunction<any>;
-  firstName?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastName?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  liveLocation?: FieldPolicy<any> | FieldReadFunction<any>;
-  nid?: FieldPolicy<any> | FieldReadFunction<any>;
-  password?: FieldPolicy<any> | FieldReadFunction<any>;
-  token?: FieldPolicy<any> | FieldReadFunction<any>;
-  username?: FieldPolicy<any> | FieldReadFunction<any>;
+  AddressLine1?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  birthDate?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  cellphone?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  educations?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  firstName?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastName?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  liveLocation?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  nid?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  password?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  token?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  username?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type SubDeviationKeySpecifier = (
   | 'creationDateTime'
@@ -1400,12 +1435,12 @@ export type SubDeviationKeySpecifier = (
   | SubDeviationKeySpecifier
 )[];
 export type SubDeviationFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  deviation?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
-  type?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  deviation?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  type?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type TermKeySpecifier = (
   | 'MadadkarAcceptance'
@@ -1432,27 +1467,31 @@ export type TermKeySpecifier = (
   | TermKeySpecifier
 )[];
 export type TermFieldPolicy = {
-  MadadkarAcceptance?: FieldPolicy<any> | FieldReadFunction<any>;
-  MadadkarAcceptanceDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  MadadkarUser?: FieldPolicy<any> | FieldReadFunction<any>;
-  ModirAcceptance?: FieldPolicy<any> | FieldReadFunction<any>;
-  ModirAcceptanceDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  ModirUser?: FieldPolicy<any> | FieldReadFunction<any>;
-  ProvinceAcceptance?: FieldPolicy<any> | FieldReadFunction<any>;
-  ProvinceAcceptanceDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  ProvinceUser?: FieldPolicy<any> | FieldReadFunction<any>;
-  account?: FieldPolicy<any> | FieldReadFunction<any>;
-  checkList?: FieldPolicy<any> | FieldReadFunction<any>;
-  cost?: FieldPolicy<any> | FieldReadFunction<any>;
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  detail?: FieldPolicy<any> | FieldReadFunction<any>;
-  document?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  locked?: FieldPolicy<any> | FieldReadFunction<any>;
-  semister?: FieldPolicy<any> | FieldReadFunction<any>;
-  unit?: FieldPolicy<any> | FieldReadFunction<any>;
-  year?: FieldPolicy<any> | FieldReadFunction<any>;
+  MadadkarAcceptance?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  MadadkarAcceptanceDateTime?:
+    | FieldPolicy<unknown>
+    | FieldReadFunction<unknown>;
+  MadadkarUser?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ModirAcceptance?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ModirAcceptanceDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ModirUser?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ProvinceAcceptance?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  ProvinceAcceptanceDateTime?:
+    | FieldPolicy<unknown>
+    | FieldReadFunction<unknown>;
+  ProvinceUser?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  account?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  checkList?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  cost?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  detail?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  document?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  locked?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  semister?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  unit?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  year?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type TermDocumentKeySpecifier = (
   | 'creationDateTime'
@@ -1465,13 +1504,13 @@ export type TermDocumentKeySpecifier = (
   | TermDocumentKeySpecifier
 )[];
 export type TermDocumentFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  pic1?: FieldPolicy<any> | FieldReadFunction<any>;
-  pic2?: FieldPolicy<any> | FieldReadFunction<any>;
-  pic3?: FieldPolicy<any> | FieldReadFunction<any>;
-  term?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  pic1?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  pic2?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  pic3?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  term?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type TransactionKeySpecifier = (
   | 'creationDateTime'
@@ -1490,19 +1529,19 @@ export type TransactionKeySpecifier = (
   | TransactionKeySpecifier
 )[];
 export type TransactionFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  description?: FieldPolicy<any> | FieldReadFunction<any>;
-  getRecordCount?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  isEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
-  isPayed?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  priority?: FieldPolicy<any> | FieldReadFunction<any>;
-  semister?: FieldPolicy<any> | FieldReadFunction<any>;
-  threshold?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
-  userRegistrar?: FieldPolicy<any> | FieldReadFunction<any>;
-  year?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  description?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  getRecordCount?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  isEnabled?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  isPayed?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  priority?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  semister?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  threshold?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  userRegistrar?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  year?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type UniversityDepartmentKeySpecifier = (
   | 'county'
@@ -1514,12 +1553,12 @@ export type UniversityDepartmentKeySpecifier = (
   | UniversityDepartmentKeySpecifier
 )[];
 export type UniversityDepartmentFieldPolicy = {
-  county?: FieldPolicy<any> | FieldReadFunction<any>;
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
-  type?: FieldPolicy<any> | FieldReadFunction<any>;
+  county?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  type?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type UniversityLevelKeySpecifier = (
   | 'creationDateTime'
@@ -1530,11 +1569,11 @@ export type UniversityLevelKeySpecifier = (
   | UniversityLevelKeySpecifier
 )[];
 export type UniversityLevelFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  subgroup?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  subgroup?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type UniversityLevelGroupKeySpecifier = (
   | 'creationDateTime'
@@ -1544,10 +1583,10 @@ export type UniversityLevelGroupKeySpecifier = (
   | UniversityLevelGroupKeySpecifier
 )[];
 export type UniversityLevelGroupFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type UniversityLevelSubGroupKeySpecifier = (
   | 'creationDateTime'
@@ -1558,11 +1597,11 @@ export type UniversityLevelSubGroupKeySpecifier = (
   | UniversityLevelSubGroupKeySpecifier
 )[];
 export type UniversityLevelSubGroupFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  group?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  group?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type UniversityMajorKeySpecifier = (
   | 'creationDateTime'
@@ -1573,11 +1612,11 @@ export type UniversityMajorKeySpecifier = (
   | UniversityMajorKeySpecifier
 )[];
 export type UniversityMajorFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  level?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  level?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type UniversityTypeKeySpecifier = (
   | 'creationDateTime'
@@ -1587,10 +1626,10 @@ export type UniversityTypeKeySpecifier = (
   | UniversityTypeKeySpecifier
 )[];
 export type UniversityTypeFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type UserKeySpecifier = (
   | 'cellphone'
@@ -1612,22 +1651,22 @@ export type UserKeySpecifier = (
   | UserKeySpecifier
 )[];
 export type UserFieldPolicy = {
-  cellphone?: FieldPolicy<any> | FieldReadFunction<any>;
-  county?: FieldPolicy<any> | FieldReadFunction<any>;
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  deviation?: FieldPolicy<any> | FieldReadFunction<any>;
-  email?: FieldPolicy<any> | FieldReadFunction<any>;
-  firstName?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  isEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastName?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  password?: FieldPolicy<any> | FieldReadFunction<any>;
-  province?: FieldPolicy<any> | FieldReadFunction<any>;
-  role?: FieldPolicy<any> | FieldReadFunction<any>;
-  subDeviation?: FieldPolicy<any> | FieldReadFunction<any>;
-  token?: FieldPolicy<any> | FieldReadFunction<any>;
-  userId?: FieldPolicy<any> | FieldReadFunction<any>;
+  cellphone?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  county?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  deviation?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  email?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  firstName?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  isEnabled?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastName?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  password?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  province?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  role?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  subDeviation?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  token?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  userId?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type YearKeySpecifier = (
   | 'creationDateTime'
@@ -1641,14 +1680,14 @@ export type YearKeySpecifier = (
   | YearKeySpecifier
 )[];
 export type YearFieldPolicy = {
-  creationDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  isEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
-  lastUpdateDateTime?: FieldPolicy<any> | FieldReadFunction<any>;
-  term1?: FieldPolicy<any> | FieldReadFunction<any>;
-  term2?: FieldPolicy<any> | FieldReadFunction<any>;
-  term3?: FieldPolicy<any> | FieldReadFunction<any>;
-  title?: FieldPolicy<any> | FieldReadFunction<any>;
+  creationDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  id?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  isEnabled?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  lastUpdateDateTime?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  term1?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  term2?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  term3?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
+  title?: FieldPolicy<unknown> | FieldReadFunction<unknown>;
 };
 export type StrictTypedTypePolicies = {
   AccountDetail?: Omit<TypePolicy, 'fields' | 'keyFields'> & {

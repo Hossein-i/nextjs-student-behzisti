@@ -1,1 +1,1 @@
-export type * from './types.generate';
+export * from './types.generate';
