@@ -1,12 +1,35 @@
-import NextAuth, { User } from 'next-auth';
+import NextAuth, { NextAuthConfig, User } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
 import { signInDocument, type SignInMutation } from '../api/graphql';
 
 import { config } from '.';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authConfig: NextAuthConfig = {
   trustHost: true,
+  providers: [],
+  session: { strategy: 'jwt' },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.token = user.token;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.token = token.token;
+      }
+
+      return session;
+    },
+  },
+  pages: { signIn: '/auth', signOut: '/auth/sign-out', error: '/auth/error' },
+};
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
@@ -60,21 +83,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.token = user.token;
-      }
-
-      return token;
-    },
-    async session({ session, token }) {
-      if (token && session.user) {
-        session.user.token = token.token;
-      }
-
-      return session;
-    },
-  },
-  pages: { signIn: '/auth', signOut: '/auth/sign-out', error: '/auth/error' },
 });
