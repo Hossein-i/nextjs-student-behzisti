@@ -1,4 +1,4 @@
-import type { TermsByEducationLevelQueryReturn } from '@/shared/api/graphql';
+import type { GetTermsByEducationLevelQuery } from '@/shared/api/graphql';
 
 export type TermByEducationLevel =
-  NonNullable<TermsByEducationLevelQueryReturn>[number];
+  GetTermsByEducationLevelQuery['getTerms'][number];
