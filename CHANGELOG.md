@@ -1,5 +1,15 @@
 # nextjs-student-behzisti
 
+## 1.0.1
+
+### Patch Changes
+
+- Important Update: Temporary Issue
+
+  We’ve encountered a critical issue in the Student Welfare Portal that is currently preventing us from building the latest version. Our team is actively working to fix it as quickly as possible.
+
+  We appreciate your patience and will provide updates once the issue is resolved. Thank you for your understanding.
+
 ## 1.0.0
 
 ### Major Changes
