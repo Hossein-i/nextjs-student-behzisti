@@ -1,11 +1,11 @@
-import { getToken } from 'next-auth/jwt';
-import { NextRequest, NextResponse } from 'next/server';
+import NextAuth, { NextAuthRequest } from 'next-auth';
+import { NextResponse } from 'next/server';
 
-import { config as cnf } from '../config';
+import { authConfig } from '../config/auth';
 import { checkRoute } from '../lib/check-route';
 
 export type AuthHandler = (
-  request: NextRequest,
+  request: NextAuthRequest,
   context?: unknown
 ) => NextResponse | Promise<NextResponse>;
 
@@ -56,17 +56,14 @@ export const defineAuthMiddleware = (config: AuthMiddlewareConfig) => {
   const { authRedirect, loginRedirect, accessDeniedRedirect, logoutRedirect } =
     fallback;
 
-  return (
-    next?: AuthHandler
-  ): ((request: NextRequest) => Promise<NextResponse<unknown>>) => {
-    return async (request) => {
+  const { auth } = NextAuth(authConfig);
+
+  return (next?: AuthHandler) => {
+    return auth(async (request) => {
       const response = (await next?.(request)) || NextResponse.next();
       const { origin, pathname } = request.nextUrl;
 
-      const token = await getToken({
-        req: request,
-        secret: cnf.AUTH_SECRET,
-      });
+      const token = request.auth?.user.token;
       const isLoggedIn = Boolean(token);
 
       const isAuthRoute = authRoutes.some((route) =>
@@ -80,7 +77,7 @@ export const defineAuthMiddleware = (config: AuthMiddlewareConfig) => {
       const callbackUrlCookie = request.cookies.get(cookieNames.callbackUrl);
       const callbackUrl = callbackUrlCookie?.value;
 
-      const userRole = token?.role as string | undefined;
+      const userRole = undefined as string | undefined;
 
       if (isLoggedIn && isAuthRoute) {
         if (callbackUrl) {
@@ -126,6 +123,6 @@ export const defineAuthMiddleware = (config: AuthMiddlewareConfig) => {
       }
 
       return response;
-    };
+    });
   };
 };

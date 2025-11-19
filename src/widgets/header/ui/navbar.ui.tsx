@@ -30,7 +30,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
         <NavbarItem>
           <NavbarBrand>
             <BlurredCard classNames={{ body: 'p-0' }}>
-              <Link href="/my">
+              <Link href="/">
                 <div className="flex items-center gap-2 p-2">
                   <Logo width={32} height={32} />
                   <Caption>سامانه دانشجویی بهزیستی</Caption>

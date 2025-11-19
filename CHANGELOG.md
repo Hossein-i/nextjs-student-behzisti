@@ -1,5 +1,15 @@
 # nextjs-student-behzisti
 
+## 1.0.2
+
+### Patch Changes
+
+- Patch Update Released
+
+  We’ve just released a new patch for the Student Welfare Portal that addresses several issues related to our middleware layer. This update improves system stability and ensures smoother performance across the platform.
+
+  Thank you for your continued support. If you experience any issues, please let us know.
+
 ## 1.0.1
 
 ### Patch Changes
